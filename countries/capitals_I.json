@@ -1,0 +1,74 @@
+{
+  "Iceland": [
+    {
+      "cc": "IS",
+      "lat": 64.1333,
+      "lon": -21.9333,
+      "name": "Reykjavik",
+      "tz": "Atlantic/Reykjavik"
+    }
+  ],
+  "India": [
+    {
+      "cc": "IN",
+      "lat": 28.6139,
+      "lon": 77.209,
+      "name": "New Delhi",
+      "tz": "Asia/Kolkata"
+    }
+  ],
+  "Indonesia": [
+    {
+      "cc": "ID",
+      "lat": -6.2088,
+      "lon": 106.8456,
+      "name": "Jakarta",
+      "tz": "Asia/Jakarta"
+    }
+  ],
+  "Iran": [
+    {
+      "cc": "IR",
+      "lat": 35.6892,
+      "lon": 51.389,
+      "name": "Tehran",
+      "tz": "Asia/Tehran"
+    }
+  ],
+  "Iraq": [
+    {
+      "cc": "IQ",
+      "lat": 33.3152,
+      "lon": 44.3661,
+      "name": "Baghdad",
+      "tz": "Asia/Baghdad"
+    }
+  ],
+  "Ireland": [
+    {
+      "cc": "IE",
+      "lat": 53.3498,
+      "lon": -6.2603,
+      "name": "Dublin",
+      "tz": "Europe/Dublin"
+    }
+  ],
+  "Israel": [
+    {
+      "cc": "IL",
+      "lat": 31.7683,
+      "lon": 35.2137,
+      "name": "Jerusalem",
+      "tz": "Asia/Jerusalem"
+    }
+  ],
+  "Italy": [
+    {
+      "cc": "IT",
+      "lat": 41.9028,
+      "lon": 12.4964,
+      "name": "Rome",
+      "tz": "Europe/Rome"
+    }
+  ]
+}

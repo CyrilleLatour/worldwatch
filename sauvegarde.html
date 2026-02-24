@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Analog Watch - Mobile Frame</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-title" content="WorldWatch">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <meta name="theme-color" content="#111111">
+  <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap" rel="stylesheet">
+  <style>
+    html, body { height:100%; margin:0; background:#e9ecef; display:grid; place-items:center; font-family:Arial,Helvetica,sans-serif; }
+
+    .phone {
+      position:relative; width:min(390px,92vw); aspect-ratio:9/19.5; background:#f8f9fa;
+      border: 16px solid #f8f9fa; border-radius:34px;
+      box-shadow:0 20px 60px rgba(0,0,0,.25), inset 0 0 0 1px rgba(255,255,255,.06);
+      overflow:hidden;
+    }
+
+    .screen { position:absolute; inset:20px 14px 20px; display:grid;
+              grid-template-rows:auto 1fr auto; align-items:start; }
+
+    .header { position:relative; height:44px; display:flex; align-items:center; justify-content:center; }
+    .city-name { font-weight:700; font-size:30px; color:blue; pointer-events:none; }
+    .town-btn { position:absolute; right:0; margin-right:10px; padding:4px 10px; font-size:14px;
+                border:1px solid #000; border-radius:4px; background:#fff; cursor:pointer; }
+
+    /* menu des villes */
+    .town-menu {
+      position:absolute;
+      top:44px; right:10px;
+      background:#fff;
+      border:1px solid #000;
+      border-radius:4px;
+      display:none;
+      flex-direction:column;
+      z-index:100;
+    }
+    .town-option {
+      padding:6px 10px;
+      cursor:pointer;
+      font-size:14px;
+    }
+    .town-option:hover {
+      background:#ddd;
+    }
+
+    .center-pane { position:relative; display:grid; align-content:start; justify-items:center; padding-top:25px; }
+    .watch { position:relative; width:300px; height:300px; border:8px solid #000; border-radius:50%; background:#fff; overflow:hidden; }
+
+    .overlay-svg {
+      position:absolute;
+      top:0; left:0;
+      width:100%; height:100%;
+      pointer-events:none;
+      z-index:30;
+    }
+
+    .hand { position:absolute; bottom:50%; left:50%; transform:translateX(-50%) rotate(0deg); transform-origin:bottom center; background:#000; }
+    .hand.hour{ width:6px; height:70px; z-index:10; } 
+    .hand.minute{ width:6px; height:100px; z-index:9; } /* élargi à 6px */
+    .hand.second{ width:2px; height:120px; z-index:8; background:#e00; }
+    .center-dot{ position:absolute; width:14px; height:14px; background:#000; border-radius:50%; top:50%; left:50%; transform:translate(-50%,-50%); z-index:20; }
+    .dot{ position:absolute; width:10px; height:10px; background:#000; border-radius:50%; }
+    .min-dot{ position:absolute; width:5px; height:5px; background:#000; border-radius:50%; opacity:.9; }
+    .mark-wrap{ position:absolute; left:50%; top:50%; transform-origin:center center; }
+    .main-mark{ position:absolute; left:50%; top:50%; width:6px; height:30px; background:#000; border-radius:3px; transform-origin:50% 100%; transform:translate(-50%, var(--edge-translate,-150px)); }
+    .digital{ position:absolute; left:50%; top:58%; transform:translateX(-50%); font:14px/1 Arial,sans-serif; color:#111; z-index:20; }
+
+    .box{ display:inline-flex; align-items:center; justify-content:center; background:#fff; color:#000; border:1px solid #000; border-radius:4px; font:12px/1 Arial,sans-serif; white-space:nowrap; z-index:5; }
+    .day-box{ position:absolute; top:50%; left:85%; transform:translate(-50%,-50%); width:20px; height:20px; }
+    .week-box{ position:absolute; top:50%; left:75%; transform:translate(-50%,-50%); text-transform:lowercase; width:24px; height:20px; }
+    .month-cluster{ position:absolute; top:50%; left:25%; transform:translate(-50%,-50%); display:inline-flex; align-items:center; gap:6px; z-index:5; }
+    .month-box{ width:30px; height:20px; } .week-label{ font:11px/1 Arial,sans-serif; color:#000; user-select:none; } .weeknum-box{ width:20px; height:20px; }
+    .hour-num{ position:absolute; transform:translate(-50%,-50%); font-family:'Comic Neue','Comic Sans MS','Comic Sans',cursive; font-weight:700; color:blue; line-height:1; user-select:none; pointer-events:none; }
+  </style>
+</head>
+
+<body>
+  <div class="phone" id="phone">
+    <div class="screen">
+      <div class="header">
+        <div class="city-name" id="city">Geneva</div>
+        <button class="town-btn" id="townBtn">town</button>
+        <div class="town-menu" id="townMenu">
+          <div class="town-option">Geneva</div>
+          <div class="town-option">Paris</div>
+          <div class="town-option">London</div>
+          <div class="town-option">New York</div>
+          <div class="town-option">Tokyo</div>
+        </div>
+      </div>
+
+      <div class="center-pane">
+        <div class="watch" id="watch">
+          <!-- Lune + aiguilles blanches -->
+          <svg class="overlay-svg" viewBox="0 0 300 300">
+            <defs>
+              <circle id="moonOcculter" cx="150" cy="97" r="35" />
+              <clipPath id="outerMoonClip">
+                <circle cx="150" cy="97" r="42" />
+              </clipPath>
+              <mask id="blackAreasMask" maskUnits="userSpaceOnUse">
+                <rect x="0" y="0" width="300" height="300" fill="black"/>
+                <circle cx="150" cy="97" r="38.5" fill="none" stroke="white" stroke-width="7"/>
+                <use href="#moonOcculter" fill="white"/>
+              </mask>
+            </defs>
+            <circle cx="150" cy="97" r="42" fill="black" />
+            <circle cx="150" cy="97" r="35" fill="yellow" />
+            <use href="#moonOcculter" id="moonMaskVisual" fill="black" clip-path="url(#outerMoonClip)"/>
+            <g id="whiteHands" mask="url(#blackAreasMask)" stroke="white" stroke-linecap="round">
+              <line id="hourW"   x1="150" y1="150" x2="150" y2="80"  stroke-width="6"/>
+              <line id="minuteW" x1="150" y1="150" x2="150" y2="50"  stroke-width="6"/>
+              <line id="secondW" x1="150" y1="150" x2="150" y2="30"  stroke-width="2"/>
+            </g>
+          </svg>
+
+          <div class="hand hour" id="hour"></div>
+          <div class="hand minute" id="minute"></div>
+          <div class="hand second" id="second"></div>
+          <div class="center-dot"></div>
+          <div class="digital" id="digital"></div>
+
+          <div class="week-box box" id="week"></div>
+          <div class="day-box box" id="day"></div>
+
+          <div class="month-cluster" id="monthCluster">
+            <div class="month-box box" id="month"></div><div class="week-label">week</div><div class="weeknum-box box" id="weeknum"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+  let lastAngles={h:0,m:0,s:0};
+  let currentTZ="Europe/Zurich";
+
+  const phone=document.getElementById('phone'), watch=document.getElementById('watch');
+
+  function layoutWatch(){
+    const screen=phone.querySelector('.screen'), header=phone.querySelector('.header');
+    const sr=screen.getBoundingClientRect(), hr=header.getBoundingClientRect();
+    const verticalPadding=12, availableW=sr.width-8, availableH=sr.height-hr.height-verticalPadding*2;
+    const size=Math.floor(Math.min(availableW,availableH)); 
+    watch.style.width=size+'px'; watch.style.height=size+'px';
+    drawMarks(size); drawHourNumbers(size);
+  }
+
+  function drawMarks(size){
+    watch.querySelectorAll('.dot,.min-dot,.mark-wrap').forEach(n=>n.remove());
+    const CENTER=size/2, RADIUS_MARKS=size*.45, RADIUS_EDGE=size/2;
+    watch.style.setProperty('--edge-translate',(-RADIUS_EDGE)+'px');
+    for(let i=0;i<12;i++){
+      const deg=i*30;
+      if(i===0||i===3||i===6||i===9){
+        const w=document.createElement('div'); w.className='mark-wrap'; w.style.transform=`translate(-50%,-50%) rotate(${deg}deg)`;
+        const m=document.createElement('div'); m.className='main-mark'; w.appendChild(m); watch.appendChild(w);
+      } else {
+        const d=document.createElement('div'); d.className='dot';
+        const rad=(deg-90)*Math.PI/180;
+        const x=CENTER+RADIUS_MARKS*Math.cos(rad)-5, y=CENTER+RADIUS_MARKS*Math.sin(rad)-5;
+        d.style.left=`${x}px`; d.style.top=`${y}px`; watch.appendChild(d);
+      }
+    }
+    for(let m=0;m<60;m++){ 
+      if(m%5===0) continue;
+      const deg=m*6, rad=(deg-90)*Math.PI/180;
+      const md=document.createElement('div'); md.className='min-dot';
+      const x=CENTER+RADIUS_MARKS*Math.cos(rad)-2.5, y=CENTER+RADIUS_MARKS*Math.sin(rad)-2.5;
+      md.style.left=`${x}px`; md.style.top=`${y}px`; watch.appendChild(md);
+    }
+  }
+
+  function drawHourNumbers(size){
+    watch.querySelectorAll('.hour-num').forEach(n=>n.remove());
+    const CENTER=size/2, RADIUS_NUM=size*.36, fontPx=Math.max(12,Math.round(size*.08));
+    for(let h=1;h<=12;h++){ 
+      if(h===3||h===9) continue;
+      const deg=h*30, rad=(deg-90)*Math.PI/180, x=CENTER+RADIUS_NUM*Math.cos(rad), y=CENTER+RADIUS_NUM*Math.sin(rad);
+      const el=document.createElement('div'); el.className='hour-num'; el.textContent=(h===12)?'12':String(h);
+      el.style.left=`${x}px`; el.style.top=`${y}px`; el.style.fontSize=`${fontPx}px`; watch.appendChild(el);
+    }
+  }
+
+  function getPartsForTZ(tz){
+    const now=new Date();
+    const t=new Intl.DateTimeFormat('en-GB',{timeZone:tz,hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).formatToParts(now);
+    const H=parseInt(t.find(p=>p.type==='hour').value,10), M=parseInt(t.find(p=>p.type==='minute').value,10), S=parseInt(t.find(p=>p.type==='second').value,10);
+    const d=new Intl.DateTimeFormat('en-GB',{timeZone:tz,year:'numeric',month:'2-digit',day:'2-digit',weekday:'short'}).formatToParts(now);
+    const Y=parseInt(d.find(p=>p.type==='year').value,10), Mo=parseInt(d.find(p=>p.type==='month').value,10), D=parseInt(d.find(p=>p.type==='day').value,10);
+    let wd=d.find(p=>p.type==='weekday').value.toLowerCase().slice(0,3);
+    return {H,M,S,Y,Mo,D,wd};
+  }
+
+  function isoWeekOf(y,m,d){
+    const date=new Date(Date.UTC(y,m-1,d)); const dayNum=(date.getUTCDay()+6)%7+1;
+    date.setUTCDate(date.getUTCDate()+4-dayNum); const yearStart=new Date(Date.UTC(date.getUTCFullYear(),0,1));
+    return Math.ceil((((date-yearStart)/86400000)+1)/7);
+  }
+
+  function updateClockTZ(){
+    const {H,M,S}=getPartsForTZ(currentTZ); const sDeg=S*6;
+    document.getElementById('second').style.transform=`translateX(-50%) rotate(${sDeg}deg)`; lastAngles.s=sDeg;
+    document.getElementById('digital').textContent=`${String(H).padStart(2,'0')}:${String(M).padStart(2,'0')}:${String(S).padStart(2,'0')}`;
+    const mDeg=M*6+S*0.1, hDeg=(H%12)*30+M*0.5;
+    document.getElementById('minute').style.transform=`translateX(-50%) rotate(${mDeg}deg)`;
+    document.getElementById('hour').style.transform=`translateX(-50%) rotate(${hDeg}deg)`;
+    lastAngles.m=mDeg; lastAngles.h=hDeg;
+
+    document.getElementById('secondW').setAttribute('transform', `rotate(${sDeg} 150 150)`);
+    document.getElementById('minuteW').setAttribute('transform', `rotate(${mDeg} 150 150)`);
+    document.getElementById('hourW').setAttribute('transform',   `rotate(${hDeg} 150 150)`);
+  }
+
+  function updateCalendarTZ(){
+    const months=["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
+    const {Y,Mo,D,wd}=getPartsForTZ(currentTZ);
+    document.getElementById('week').textContent=wd;
+    document.getElementById('day').textContent=String(D);
+    document.getElementById('month').textContent=months[Mo-1];
+    document.getElementById('weeknum').textContent=String(isoWeekOf(Y,Mo,D));
+  }
+
+  function updateMoon(){
+    const SYNODIC = 29.530588853;
+    const REF = new Date(Date.UTC(2000,0,6,18,14));
+    const now = new Date();
+    const days = (now - REF) / 86400000;
+    const phase = ((days % SYNODIC) + SYNODIC) % SYNODIC / SYNODIC;
+    const alpha = 2 * Math.PI * phase;
+    const illum = 0.5 * (1 - Math.cos(alpha));
+    const cx = 150, cy = 97, r = 35;
+    const sign = (Math.sin(alpha) >= 0 ? -1 : 1);
+    const offset = 2 * r * (0.5 - illum) * sign;
+    const occ = document.getElementById("moonOcculter");
+    occ.setAttribute("cx", cx + offset);
+    occ.setAttribute("cy", cy);
+    occ.setAttribute("r", r);
+  }
+
+  // --- Gestion du menu des villes ---
+  const townBtn = document.getElementById("townBtn");
+  const townMenu = document.getElementById("townMenu");
+  townBtn.addEventListener("click", ()=>{
+    townMenu.style.display = (townMenu.style.display==="flex" ? "none" : "flex");
+  });
+  document.querySelectorAll(".town-option").forEach(opt=>{
+    opt.addEventListener("click", ()=>{
+      document.getElementById("city").textContent = opt.textContent;
+      townMenu.style.display="none";
+    });
+  });
+
+  layoutWatch();
+  updateClockTZ();
+  updateCalendarTZ();
+  updateMoon();
+  setInterval(()=>{updateClockTZ(); updateCalendarTZ(); updateMoon();},1000);
+</script>
+</body>
+</html>

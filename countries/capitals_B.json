@@ -1,0 +1,162 @@
+{
+  "Bahamas": [
+    {
+      "cc": "BS",
+      "lat": 25.0833,
+      "lon": -77.35,
+      "name": "Nassau",
+      "tz": "America/Nassau"
+    }
+  ],
+  "Bahrain": [
+    {
+      "cc": "BH",
+      "lat": 26.2167,
+      "lon": 50.5831,
+      "name": "Manama",
+      "tz": "Asia/Bahrain"
+    }
+  ],
+  "Bangladesh": [
+    {
+      "cc": "BD",
+      "lat": 23.8103,
+      "lon": 90.4125,
+      "name": "Dhaka",
+      "tz": "Asia/Dhaka"
+    }
+  ],
+  "Barbados": [
+    {
+      "cc": "BB",
+      "lat": 13.0975,
+      "lon": -59.6167,
+      "name": "Bridgetown",
+      "tz": "America/Barbados"
+    }
+  ],
+  "Belarus": [
+    {
+      "cc": "BY",
+      "lat": 53.9006,
+      "lon": 27.5667,
+      "name": "Minsk",
+      "tz": "Europe/Minsk"
+    }
+  ],
+  "Belgium": [
+    {
+      "cc": "BE",
+      "lat": 50.8467,
+      "lon": 4.3525,
+      "name": "Brussels",
+      "tz": "Europe/Brussels"
+    }
+  ],
+  "Belize": [
+    {
+      "cc": "BZ",
+      "lat": 17.25,
+      "lon": -88.7667,
+      "name": "Belmopan",
+      "tz": "America/Belize"
+    }
+  ],
+  "Benin": [
+    {
+      "cc": "BJ",
+      "lat": 6.4833,
+      "lon": 2.6167,
+      "name": "Porto-Novo",
+      "tz": "Africa/Porto-Novo"
+    }
+  ],
+  "Bhutan": [
+    {
+      "cc": "BT",
+      "lat": 27.4661,
+      "lon": 89.6419,
+      "name": "Thimphu",
+      "tz": "Asia/Thimphu"
+    }
+  ],
+  "Bolivia": [
+    {
+      "cc": "BO",
+      "lat": -16.5,
+      "lon": -68.1193,
+      "name": "La Paz",
+      "tz": "America/La_Paz"
+    },
+    {
+      "cc": "BO",
+      "lat": -19.0333,
+      "lon": -65.2627,
+      "name": "Sucre",
+      "tz": "America/La_Paz"
+    }
+  ],
+  "Bosnia and Herzegovina": [
+    {
+      "cc": "BA",
+      "lat": 43.8563,
+      "lon": 18.4131,
+      "name": "Sarajevo",
+      "tz": "Europe/Sarajevo"
+    }
+  ],
+  "Botswana": [
+    {
+      "cc": "BW",
+      "lat": -24.6569,
+      "lon": 25.9086,
+      "name": "Gaborone",
+      "tz": "Africa/Gaborone"
+    }
+  ],
+  "Brazil": [
+    {
+      "cc": "BR",
+      "lat": -15.7801,
+      "lon": -47.9292,
+      "name": "Brasilia",
+      "tz": "America/Sao_Paulo"
+    }
+  ],
+  "Brunei": [
+    {
+      "cc": "BN",
+      "lat": 4.8903,
+      "lon": 114.9422,
+      "name": "Bandar Seri Begawan",
+      "tz": "Asia/Brunei"
+    }
+  ],
+  "Bulgaria": [
+    {
+      "cc": "BG",
+      "lat": 42.6977,
+      "lon": 23.3219,
+      "name": "Sofia",
+      "tz": "Europe/Sofia"
+    }
+  ],
+  "Burkina Faso": [
+    {
+      "cc": "BF",
+      "lat": 12.3703,
+      "lon": -1.5275,
+      "name": "Ouagadougou",
+      "tz": "Africa/Ouagadougou"
+    }
+  ],
+  "Burundi": [
+    {
+      "cc": "BI",
+      "lat": -3.4264,
+      "lon": 29.9306,
+      "name": "Gitega",
+      "tz": "Africa/Bujumbura"
+    }
+  ]
+}

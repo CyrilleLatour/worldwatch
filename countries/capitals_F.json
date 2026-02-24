@@ -1,0 +1,29 @@
+{
+  "Fiji": [
+    {
+      "cc": "FJ",
+      "lat": -18.1416,
+      "lon": 178.4419,
+      "name": "Suva",
+      "tz": "Pacific/Fiji"
+    }
+  ],
+  "Finland": [
+    {
+      "cc": "FI",
+      "lat": 60.1699,
+      "lon": 24.9384,
+      "name": "Helsinki",
+      "tz": "Europe/Helsinki"
+    }
+  ],
+  "France": [
+    {
+      "cc": "FR",
+      "lat": 48.8566,
+      "lon": 2.3522,
+      "name": "Paris",
+      "tz": "Europe/Paris"
+    }
+  ]
+}

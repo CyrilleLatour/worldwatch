@@ -1,0 +1,56 @@
+{
+  "Kazakhstan": [
+    {
+      "cc": "KZ",
+      "lat": 51.1472,
+      "lon": 71.4222,
+      "name": "Astana",
+      "tz": "Asia/Almaty"
+    }
+  ],
+  "Kenya": [
+    {
+      "cc": "KE",
+      "lat": -1.2864,
+      "lon": 36.8172,
+      "name": "Nairobi",
+      "tz": "Africa/Nairobi"
+    }
+  ],
+  "Kiribati": [
+    {
+      "cc": "KI",
+      "lat": 1.3382,
+      "lon": 173.0176,
+      "name": "Tarawa",
+      "tz": "Pacific/Tarawa"
+    }
+  ],
+  "Kosovo": [
+    {
+      "cc": "XK",
+      "lat": 42.6675,
+      "lon": 21.1669,
+      "name": "Pristina",
+      "tz": "Europe/Belgrade"
+    }
+  ],
+  "Kuwait": [
+    {
+      "cc": "KW",
+      "lat": 29.3759,
+      "lon": 47.9774,
+      "name": "Kuwait City",
+      "tz": "Asia/Kuwait"
+    }
+  ],
+  "Kyrgyzstan": [
+    {
+      "cc": "KG",
+      "lat": 42.8746,
+      "lon": 74.6122,
+      "name": "Bishkek",
+      "tz": "Asia/Bishkek"
+    }
+  ]
+}

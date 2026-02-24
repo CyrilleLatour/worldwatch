@@ -1,0 +1,164 @@
+{
+  "Madagascar": [
+    {
+      "cc": "MG",
+      "lat": -18.8792,
+      "lon": 47.5079,
+      "name": "Antananarivo",
+      "tz": "Indian/Antananarivo"
+    }
+  ],
+  "Malawi": [
+    {
+      "cc": "MW",
+      "lat": -13.2543,
+      "lon": 34.3015,
+      "name": "Lilongwe",
+      "tz": "Africa/Blantyre"
+    }
+  ],
+  "Malaysia": [
+    {
+      "cc": "MY",
+      "lat": 3.139,
+      "lon": 101.6869,
+      "name": "Kuala Lumpur",
+      "tz": "Asia/Kuala_Lumpur"
+    }
+  ],
+  "Maldives": [
+    {
+      "cc": "MV",
+      "lat": 4.1755,
+      "lon": 73.5093,
+      "name": "Male",
+      "tz": "Indian/Maldives"
+    }
+  ],
+  "Mali": [
+    {
+      "cc": "ML",
+      "lat": 12.6392,
+      "lon": -8.0029,
+      "name": "Bamako",
+      "tz": "Africa/Bamako"
+    }
+  ],
+  "Malta": [
+    {
+      "cc": "MT",
+      "lat": 35.8997,
+      "lon": 14.5147,
+      "name": "Valletta",
+      "tz": "Europe/Malta"
+    }
+  ],
+  "Marshall Islands": [
+    {
+      "cc": "MH",
+      "lat": 7.1095,
+      "lon": 171.1911,
+      "name": "Majuro",
+      "tz": "Pacific/Majuro"
+    }
+  ],
+  "Mauritania": [
+    {
+      "cc": "MR",
+      "lat": 18.0878,
+      "lon": -15.985,
+      "name": "Nouakchott",
+      "tz": "Africa/Nouakchott"
+    }
+  ],
+  "Mauritius": [
+    {
+      "cc": "MU",
+      "lat": -20.1967,
+      "lon": 57.4989,
+      "name": "Port Louis",
+      "tz": "Indian/Mauritius"
+    }
+  ],
+  "Mexico": [
+    {
+      "cc": "MX",
+      "lat": 19.4326,
+      "lon": -99.1332,
+      "name": "Mexico City",
+      "tz": "America/Mexico_City"
+    }
+  ],
+  "Micronesia": [
+    {
+      "cc": "FM",
+      "lat": 6.911,
+      "lon": 158.174,
+      "name": "Palikir",
+      "tz": "Pacific/Ponape"
+    }
+  ],
+  "Moldova": [
+    {
+      "cc": "MD",
+      "lat": 47.0105,
+      "lon": 28.8638,
+      "name": "Chisinau",
+      "tz": "Europe/Chisinau"
+    }
+  ],
+  "Monaco": [
+    {
+      "cc": "MC",
+      "lat": 43.7333,
+      "lon": 7.4167,
+      "name": "Monaco",
+      "tz": "Europe/Monaco"
+    }
+  ],
+  "Mongolia": [
+    {
+      "cc": "MN",
+      "lat": 47.8864,
+      "lon": 106.9057,
+      "name": "Ulaanbaatar",
+      "tz": "Asia/Ulaanbaatar"
+    }
+  ],
+  "Montenegro": [
+    {
+      "cc": "ME",
+      "lat": 42.4411,
+      "lon": 19.2636,
+      "name": "Podgorica",
+      "tz": "Europe/Podgorica"
+    }
+  ],
+  "Morocco": [
+    {
+      "cc": "MA",
+      "lat": 34.0209,
+      "lon": -6.8416,
+      "name": "Rabat",
+      "tz": "Africa/Casablanca"
+    }
+  ],
+  "Mozambique": [
+    {
+      "cc": "MZ",
+      "lat": -25.9653,
+      "lon": 32.5836,
+      "name": "Maputo",
+      "tz": "Africa/Maputo"
+    }
+  ],
+  "Myanmar": [
+    {
+      "cc": "MM",
+      "lat": 19.7633,
+      "lon": 96.0785,
+      "name": "Naypyidaw",
+      "tz": "Asia/Yangon"
+    }
+  ]
+}

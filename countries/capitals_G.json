@@ -1,0 +1,101 @@
+{
+  "Gabon": [
+    {
+      "cc": "GA",
+      "lat": 0.3901,
+      "lon": 9.4544,
+      "name": "Libreville",
+      "tz": "Africa/Libreville"
+    }
+  ],
+  "Gambia": [
+    {
+      "cc": "GM",
+      "lat": 13.4531,
+      "lon": -16.5775,
+      "name": "Banjul",
+      "tz": "Africa/Banjul"
+    }
+  ],
+  "Georgia": [
+    {
+      "cc": "GE",
+      "lat": 41.7151,
+      "lon": 44.8271,
+      "name": "Tbilisi",
+      "tz": "Asia/Tbilisi"
+    }
+  ],
+  "Germany": [
+    {
+      "cc": "DE",
+      "lat": 52.52,
+      "lon": 13.405,
+      "name": "Berlin",
+      "tz": "Europe/Berlin"
+    }
+  ],
+  "Ghana": [
+    {
+      "cc": "GH",
+      "lat": 5.55,
+      "lon": -0.2,
+      "name": "Accra",
+      "tz": "Africa/Accra"
+    }
+  ],
+  "Greece": [
+    {
+      "cc": "GR",
+      "lat": 37.9838,
+      "lon": 23.7275,
+      "name": "Athens",
+      "tz": "Europe/Athens"
+    }
+  ],
+  "Grenada": [
+    {
+      "cc": "GD",
+      "lat": 12.05,
+      "lon": -61.75,
+      "name": "Saint George's",
+      "tz": "America/Grenada"
+    }
+  ],
+  "Guatemala": [
+    {
+      "cc": "GT",
+      "lat": 14.6099,
+      "lon": -90.5252,
+      "name": "Guatemala City",
+      "tz": "America/Guatemala"
+    }
+  ],
+  "Guinea": [
+    {
+      "cc": "GN",
+      "lat": 9.5092,
+      "lon": -13.7122,
+      "name": "Conakry",
+      "tz": "Africa/Conakry"
+    }
+  ],
+  "Guinea-Bissau": [
+    {
+      "cc": "GW",
+      "lat": 11.8592,
+      "lon": -15.5956,
+      "name": "Bissau",
+      "tz": "Africa/Bissau"
+    }
+  ],
+  "Guyana": [
+    {
+      "cc": "GY",
+      "lat": 6.8013,
+      "lon": -58.1553,
+      "name": "Georgetown",
+      "tz": "America/Guyana"
+    }
+  ]
+}

@@ -1,0 +1,250 @@
+{
+  "Saint Kitts and Nevis": [
+    {
+      "cc": "KN",
+      "lat": 17.3,
+      "lon": -62.7167,
+      "name": "Basseterre",
+      "tz": "America/St_Kitts"
+    }
+  ],
+  "Saint Lucia": [
+    {
+      "cc": "LC",
+      "lat": 14.002,
+      "lon": -60.996,
+      "name": "Castries",
+      "tz": "America/St_Lucia"
+    }
+  ],
+  "Saint Vincent and the Grenadines": [
+    {
+      "cc": "VC",
+      "lat": 13.155,
+      "lon": -61.227,
+      "name": "Kingstown",
+      "tz": "America/St_Vincent"
+    }
+  ],
+  "Samoa": [
+    {
+      "cc": "WS",
+      "lat": -13.8333,
+      "lon": -171.75,
+      "name": "Apia",
+      "tz": "Pacific/Apia"
+    }
+  ],
+  "San Marino": [
+    {
+      "cc": "SM",
+      "lat": 43.9336,
+      "lon": 12.4508,
+      "name": "San Marino",
+      "tz": "Europe/San_Marino"
+    }
+  ],
+  "Sao Tome and Principe": [
+    {
+      "cc": "ST",
+      "lat": 0.3333,
+      "lon": 6.7333,
+      "name": "São Tomé",
+      "tz": "Africa/Sao_Tome"
+    }
+  ],
+  "Saudi Arabia": [
+    {
+      "cc": "SA",
+      "lat": 24.65,
+      "lon": 46.71,
+      "name": "Riyadh",
+      "tz": "Asia/Riyadh"
+    }
+  ],
+  "Senegal": [
+    {
+      "cc": "SN",
+      "lat": 14.6928,
+      "lon": -17.4467,
+      "name": "Dakar",
+      "tz": "Africa/Dakar"
+    }
+  ],
+  "Serbia": [
+    {
+      "cc": "RS",
+      "lat": 44.8176,
+      "lon": 20.4569,
+      "name": "Belgrade",
+      "tz": "Europe/Belgrade"
+    }
+  ],
+  "Seychelles": [
+    {
+      "cc": "SC",
+      "lat": -4.6167,
+      "lon": 55.45,
+      "name": "Victoria",
+      "tz": "Indian/Mahe"
+    }
+  ],
+  "Sierra Leone": [
+    {
+      "cc": "SL",
+      "lat": 8.484,
+      "lon": -13.2299,
+      "name": "Freetown",
+      "tz": "Africa/Freetown"
+    }
+  ],
+  "Singapore": [
+    {
+      "cc": "SG",
+      "lat": 1.3,
+      "lon": 103.8,
+      "name": "Singapore",
+      "tz": "Asia/Singapore"
+    }
+  ],
+  "Slovakia": [
+    {
+      "cc": "SK",
+      "lat": 48.1482,
+      "lon": 17.1067,
+      "name": "Bratislava",
+      "tz": "Europe/Bratislava"
+    }
+  ],
+  "Slovenia": [
+    {
+      "cc": "SI",
+      "lat": 46.0511,
+      "lon": 14.5051,
+      "name": "Ljubljana",
+      "tz": "Europe/Ljubljana"
+    }
+  ],
+  "Solomon Islands": [
+    {
+      "cc": "SB",
+      "lat": -9.4333,
+      "lon": 159.95,
+      "name": "Honiara",
+      "tz": "Pacific/Guadalcanal"
+    }
+  ],
+  "Somalia": [
+    {
+      "cc": "SO",
+      "lat": 2.0417,
+      "lon": 45.3425,
+      "name": "Mogadishu",
+      "tz": "Africa/Mogadishu"
+    }
+  ],
+  "South Africa": [
+    {
+      "cc": "ZA",
+      "lat": -25.7461,
+      "lon": 28.1881,
+      "name": "Pretoria",
+      "tz": "Africa/Johannesburg"
+    },
+    {
+      "cc": "ZA",
+      "lat": -33.9258,
+      "lon": 18.4232,
+      "name": "Cape Town",
+      "tz": "Africa/Johannesburg"
+    },
+    {
+      "cc": "ZA",
+      "lat": -29.1211,
+      "lon": 26.214,
+      "name": "Bloemfontein",
+      "tz": "Africa/Johannesburg"
+    }
+  ],
+  "South Korea": [
+    {
+      "cc": "KR",
+      "lat": 37.5665,
+      "lon": 126.978,
+      "name": "Seoul",
+      "tz": "Asia/Seoul"
+    }
+  ],
+  "South Sudan": [
+    {
+      "cc": "SS",
+      "lat": 4.85,
+      "lon": 31.6,
+      "name": "Juba",
+      "tz": "Africa/Juba"
+    }
+  ],
+  "Spain": [
+    {
+      "cc": "ES",
+      "lat": 40.4167,
+      "lon": -3.7033,
+      "name": "Madrid",
+      "tz": "Europe/Madrid"
+    }
+  ],
+  "Sri Lanka": [
+    {
+      "cc": "LK",
+      "lat": 6.9344,
+      "lon": 79.8428,
+      "name": "Sri Jayawardenepura Kotte",
+      "tz": "Asia/Colombo"
+    }
+  ],
+  "Sudan": [
+    {
+      "cc": "SD",
+      "lat": 15.6031,
+      "lon": 32.5265,
+      "name": "Khartoum",
+      "tz": "Africa/Khartoum"
+    }
+  ],
+  "Suriname": [
+    {
+      "cc": "SR",
+      "lat": 5.8667,
+      "lon": -55.1667,
+      "name": "Paramaribo",
+      "tz": "America/Paramaribo"
+    }
+  ],
+  "Sweden": [
+    {
+      "cc": "SE",
+      "lat": 59.3294,
+      "lon": 18.0686,
+      "name": "Stockholm",
+      "tz": "Europe/Stockholm"
+    }
+  ],
+  "Switzerland": [
+    {
+      "cc": "CH",
+      "lat": 46.9481,
+      "lon": 7.4474,
+      "name": "Bern",
+      "tz": "Europe/Zurich"
+    }
+  ],
+  "Syria": [
+    {
+      "cc": "SY",
+      "lat": 33.5138,
+      "lon": 36.2765,
+      "name": "Damascus",
+      "tz": "Asia/Damascus"
+    }
+  ]
+}

@@ -1,0 +1,236 @@
+/* watch-styles.css — CLEAN (no capitals), Geneva default black/normal */
+
+/* ---------- CSS variables (layout + close cross colors) ---------- */
+:root{
+  /* Layout offsets */
+  --map-offset: -30px;      /* world map block vertical tweak */
+  --sun-offset: -20px;      /* sunrise / noon / sunset row */
+  --diff-offset: -30px;     /* time difference row */
+  --reset-offset: 30px;     /* reset button vertical pos under diff row */
+  --mapbtn-offset: -300px;  /* "map" button vertical pos */
+
+  /* Close cross (drawn in SVG; colors per day/night mask) */
+  --close-offset-x: 10px;    /* distance from left (px) */
+  --close-offset-y: 20px;    /* distance from bottom (px) */
+  --close-size: 20;          /* visual size (px) */
+  --close-stroke: 5;         /* branch thickness (px) */
+  --close-color-day: orange; /* color over DAY area */
+  --close-color-night: orange; /* color over NIGHT area */
+}
+
+/* ---------- Base ---------- */
+html, body {
+  height: 100%;
+  margin: 0;
+  background: #e9ecef;
+  display: grid;
+  place-items: center;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+button { font: inherit; }
+
+/* ---------- Phone frame ---------- */
+.phone{
+  position: relative;
+  width: min(390px, 92vw);
+  aspect-ratio: 9 / 19.5;
+  background: #f8f9fa;
+  border: 12px solid #111;
+  border-radius: 34px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.25), inset 0 0 0 1px rgba(255,255,255,.06);
+  overflow: hidden;
+}
+.screen{
+  position: absolute;
+  inset: 20px 14px 20px;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  align-items: start;
+  row-gap: 0;
+}
+
+/* ---------- Header ---------- */
+.header{
+  position: relative;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.city-name{
+  font-weight: 400;         /* NOT bold */
+  color: #000;              /* black */
+  font-size: 28px;
+  letter-spacing: .2px;
+  pointer-events: none;
+}
+.tz-button{
+  position: absolute; right: 15px; top: 8px;
+  font-size: 12px; padding: 8px 10px;
+  border: 1px solid #000; background: #fff; color: #000;
+  border-radius: 8px; cursor: pointer; user-select: none; z-index: 20;
+}
+.tz-button:hover{ background:#f3f3f3; }
+
+/* Dropdown */
+.tz-menu{
+  position: absolute; right: 0; top: 44px; width: 240px;
+  background:#fff; border:1px solid #000; border-radius:8px;
+  box-shadow:0 8px 24px rgba(0,0,0,.15); z-index:1000; overflow:hidden; display:none;
+}
+.tz-menu.show{ display:block; }
+.tz-menu-header{
+  padding:8px 10px; font-size:12px; font-weight:600; background:#f1f1f1; border-bottom:1px solid #000;
+}
+.tz-menu-list{ max-height:320px; overflow-y:auto; -webkit-overflow-scrolling:touch; overscroll-behavior:contain; }
+.tz-item{
+  height:32px; line-height:32px; padding:0 10px; font-size:13px; cursor:pointer; white-space:nowrap;
+  display:flex; align-items:center; justify-content:space-between; gap:8px;
+}
+.tz-item:hover, .tz-item:focus{ background:#e9f2ff; outline:none; }
+.tz-item.active{ background:#d7ecff; font-weight:600; }
+.tz-cc{ font-size:12px; color:#333; opacity:.85; flex:0 0 auto; }
+
+/* ---------- Watch area ---------- */
+.center-pane{ position:relative; display:grid; align-content:start; justify-items:center; padding-top:25px; }
+
+.watch{
+  position:relative; width:300px; height:300px;
+  border:8px solid #000; border-radius:50%;
+  background:#fff; overflow:hidden;
+}
+.hand{
+  position:absolute; bottom:50%; left:50%;
+  transform:translateX(-50%) rotate(0deg);
+  transform-origin: bottom center; background:#000;
+}
+.hand.hour{ width:6px; height:70px; z-index:10; }
+.hand.minute{ width:4px; height:100px; z-index:9; }
+.hand.second{ width:2px; height:120px; z-index:8; background:#e00; }
+
+.center-dot{ position:absolute; width:14px; height:14px; background:#000; border-radius:50%; top:50%; left:50%; transform:translate(-50%,-50%); z-index:20; }
+
+.dot{ position:absolute; width:10px; height:10px; background:#000; border-radius:50%; }
+.min-dot{ position:absolute; width:5px; height:5px; background:#000; border-radius:50%; opacity:.9; }
+
+.mark-wrap{ position:absolute; left:50%; top:50%; transform-origin:center center; }
+.main-mark{
+  position:absolute; left:50%; top:50%; width:6px; height:30px; background:#000; border-radius:3px;
+  transform-origin:50% 100%; transform:translate(-50%, var(--edge-translate,-150px));
+}
+
+.digital{
+  position:absolute; left:50%; top:58%; transform:translateX(-50%);
+  font:14px/1 Arial,sans-serif; color:#111; z-index:20;
+}
+
+/* Day/Week/Month boxes */
+.box{
+  display:inline-flex; align-items:center; justify-content:center; background:#fff; color:#000; border:1px solid #000; border-radius:4px;
+  font:12px/1 Arial,sans-serif; white-space:nowrap; z-index:5;
+}
+.day-box{ position:absolute; top:50%; left:85%; transform:translate(-50%,-50%); width:20px; height:20px; }
+.week-box{ position:absolute; top:50%; left:75%; transform:translate(-50%,-50%); text-transform:lowercase; width:24px; height:20px; }
+.month-cluster{ position:absolute; top:50%; left:25%; transform:translate(-50%, -50%); display:inline-flex; align-items:center; gap:6px; z-index:5; }
+.month-box{ width:30px; height:20px; }
+.week-label{ font:11px/1 Arial,sans-serif; color:#000; user-select:none; }
+.weeknum-box{ width:20px; height:20px; }
+
+/* Hour numerals (inside dial) */
+.hour-num{
+  position:absolute; transform:translate(-50%,-50%);
+  font-weight:700; color:#000; line-height:1; user-select:none; pointer-events:none;
+}
+
+/* ---------- Map ---------- */
+.footer{ display:block; }
+.map-container{
+  position:relative; z-index:1; width:100%; aspect-ratio: 2 / 1;
+  background: transparent; border:1px solid #000; top: var(--map-offset); overflow:hidden;
+}
+.map-container svg{ width:100%; height:100%; display:block; }
+
+.land{ fill:#fff; }
+.boundary{ fill:none; stroke:#444; stroke-width:.6px; }
+.graticule{ fill:none; stroke:#ccc; stroke-opacity:.3; stroke-width:.5px; }
+.sphere{ fill:#add8e6; stroke:#333; }
+
+/* City marker */
+.city-marker{ stroke:white; stroke-width:1px; opacity:1; }
+@keyframes cityBlink { 0%{opacity:0;} 50%{opacity:1;} 100%{opacity:0;} }
+.city-marker.pulse { animation: cityBlink 1s ease-in-out infinite; }
+
+/* Sun row */
+.sun-row{
+  position:relative; top: var(--sun-offset);
+  text-align:center; font:12px/1.2 Arial,Helvetica,sans-serif;
+}
+.sun-row b{ font-weight:700; }
+.sun-row .sep{ margin:0 .5em; opacity:.6; }
+
+/* Time difference row */
+.diff-row{
+  position:relative; top: var(--diff-offset);
+  text-align:center; font:14px/1.4 Arial,Helvetica,sans-serif;
+}
+.diff-button{
+  margin-left:8px; padding:6px 10px; font-size:12px;
+  border:1px solid #000; background:#fff; color:#000; border-radius:8px; cursor:pointer;
+}
+.diff-button:hover{ background:#f3f3f3; }
+#diffOutput{ font-weight:700; margin-left:6px; }
+
+/* Diff dropdown (kept empty until you add cities) */
+.diff-menu{
+  position:absolute; left:50%; transform:translateX(-50%);
+  bottom: -40px; width:240px; max-height:340px;
+  overflow-y:auto; -webkit-overflow-scrolling:touch; display:none;
+  background:#fff; border:1px solid #000; border-radius:8px; box-shadow:0 8px 24px rgba(0,0,0,.15); z-index:1000; overflow:hidden;
+}
+.diff-menu.show{ display:block; }
+.diff-menu-header{
+  padding:8px 10px; font-size:12px; font-weight:600; background:#f1f1f1; border-bottom:1px solid #000;
+}
+.diff-list{ max-height: calc(60vh - 40px); overflow-y:auto; -webkit-overflow-scrolling:touch; }
+
+.diff-item{
+  height:32px; line-height:32px; padding:0 10px; font-size:13px; cursor:pointer; white-space:nowrap;
+  display:flex; align-items:center; justify-content:space-between; gap:8px;
+}
+.diff-item:hover, .diff-item:focus{ background:#e9f2ff; outline:none; }
+.diff-cc{ font-size:12px; color:#333; opacity:.85; flex:0 0 auto; }
+
+/* Reset button */
+.reset-button{
+  position:absolute; top: var(--reset-offset); left:50%; transform:translateX(-50%);
+  display:block; margin:8px auto 0; font-size:12px; padding:6px 10px;
+  border:1px solid #000; background:#fff; color:#000; border-radius:8px; cursor:pointer; user-select:none;
+}
+.reset-button:hover{ background:#f3f3f3; }
+
+/* Night overlay & night-only strokes */
+.night{ fill:#191970; fill-opacity:.90; pointer-events:none; }
+.night-only{ fill:none; stroke:#fff; stroke-width:1px; pointer-events:none; }
+
+/* Compare line */
+.compare-marker{ }
+.compare-line{ fill:none; stroke-dasharray:6,4; pointer-events:none; }
+
+/* Map open button */
+.map-button{
+  position: absolute; left:50%; transform: translate(-50%, var(--mapbtn-offset)); z-index:20;
+  margin:0; padding:8px 12px; font-size:12px;
+  border:1px solid #000; background:#fff; color:#000; border-radius:8px; cursor:pointer; user-select:none;
+}
+.map-button:hover{ background:#f3f3f3; }
+
+/* Close map hitbox (the visible X is drawn in SVG; this is just the clickable area) */
+.close-map-btn{
+  position:absolute; bottom: var(--close-offset-y); left: var(--close-offset-x);
+  width: calc(var(--close-size) * 1px + 12px);
+  height: calc(var(--close-size) * 1px + 12px);
+  font-size:0; font-weight:bold; line-height:1; border:none; background:transparent; cursor:pointer;
+  z-index:2000; user-select:none; display:none; padding:0;
+  color:transparent; text-shadow:none;
+}

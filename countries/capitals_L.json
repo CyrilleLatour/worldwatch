@@ -1,0 +1,83 @@
+{
+  "Laos": [
+    {
+      "cc": "LA",
+      "lat": 17.9667,
+      "lon": 102.6,
+      "name": "Vientiane",
+      "tz": "Asia/Vientiane"
+    }
+  ],
+  "Latvia": [
+    {
+      "cc": "LV",
+      "lat": 56.9496,
+      "lon": 24.1052,
+      "name": "Riga",
+      "tz": "Europe/Riga"
+    }
+  ],
+  "Lebanon": [
+    {
+      "cc": "LB",
+      "lat": 33.8938,
+      "lon": 35.5018,
+      "name": "Beirut",
+      "tz": "Asia/Beirut"
+    }
+  ],
+  "Lesotho": [
+    {
+      "cc": "LS",
+      "lat": -29.3167,
+      "lon": 27.4833,
+      "name": "Maseru",
+      "tz": "Africa/Maseru"
+    }
+  ],
+  "Liberia": [
+    {
+      "cc": "LR",
+      "lat": 6.3,
+      "lon": -10.8,
+      "name": "Monrovia",
+      "tz": "Africa/Monrovia"
+    }
+  ],
+  "Libya": [
+    {
+      "cc": "LY",
+      "lat": 32.8872,
+      "lon": 13.1913,
+      "name": "Tripoli",
+      "tz": "Africa/Tripoli"
+    }
+  ],
+  "Liechtenstein": [
+    {
+      "cc": "LI",
+      "lat": 47.1416,
+      "lon": 9.5215,
+      "name": "Vaduz",
+      "tz": "Europe/Vaduz"
+    }
+  ],
+  "Lithuania": [
+    {
+      "cc": "LT",
+      "lat": 54.6872,
+      "lon": 25.2798,
+      "name": "Vilnius",
+      "tz": "Europe/Vilnius"
+    }
+  ],
+  "Luxembourg": [
+    {
+      "cc": "LU",
+      "lat": 49.6117,
+      "lon": 6.13,
+      "name": "Luxembourg",
+      "tz": "Europe/Luxembourg"
+    }
+  ]
+}

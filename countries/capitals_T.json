@@ -1,0 +1,59 @@
+{
+  "Taiwan": [
+    {
+      "cc": "TW",
+      "lat": 25.033,
+      "lon": 121.5654,
+      "name": "Taipei",
+      "tz": "Asia/Taipei"
+    }
+  ],
+  "Tajikistan": [
+    {
+      "cc": "TJ",
+      "lat": 38.5731,
+      "lon": 68.7864,
+      "name": "Dushanbe",
+      "tz": "Asia/Dushanbe"
+    }
+  ],
+  "Tanzania": [
+    {
+      "cc": "TZ",
+      "lat": -6.163,
+      "lon": 35.7516,
+      "name": "Dodoma",
+      "tz": "Africa/Dar_es_Salaam"
+    }
+  ],
+  "Thailand": [
+    {
+      "cc": "TH",
+      "lat": 13.7563,
+      "lon": 100.5018,
+      "name": "Bangkok",
+      "tz": "Asia/Bangkok"
+    }
+  ],
+  "Timor-Leste": [
+    {
+      "cc": "TL",
+      "lat": -8.5586,
+      "lon": 125.5736,
+      "name": "Dili",
+      "tz": "Asia/Dili"
+    }
+  ],
+  "Togo": [
+    {
+      "cc": "TG",
+      "lat": 6.1319,
+      "lon": 1.2228,
+      "name": "Lomé",
+      "tz": "Africa/Lome"
+    }
+  ],
+  "Tonga": [
+    {
+      "cc": "TO",
+      "lat": -21.1333,

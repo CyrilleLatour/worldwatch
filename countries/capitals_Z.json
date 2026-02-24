@@ -1,0 +1,20 @@
+{
+  "Zambia": [
+    {
+      "cc": "ZM",
+      "lat": -15.4167,
+      "lon": 28.2833,
+      "name": "Lusaka",
+      "tz": "Africa/Lusaka"
+    }
+  ],
+  "Zimbabwe": [
+    {
+      "cc": "ZW",
+      "lat": -17.8292,
+      "lon": 31.0522,
+      "name": "Harare",
+      "tz": "Africa/Harare"
+    }
+  ]
+}

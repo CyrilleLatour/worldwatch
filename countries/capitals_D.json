@@ -1,0 +1,38 @@
+{
+  "Denmark": [
+    {
+      "cc": "DK",
+      "lat": 55.6761,
+      "lon": 12.5683,
+      "name": "Copenhagen",
+      "tz": "Europe/Copenhagen"
+    }
+  ],
+  "Djibouti": [
+    {
+      "cc": "DJ",
+      "lat": 11.5883,
+      "lon": 43.145,
+      "name": "Djibouti",
+      "tz": "Africa/Djibouti"
+    }
+  ],
+  "Dominica": [
+    {
+      "cc": "DM",
+      "lat": 15.301,
+      "lon": -61.387,
+      "name": "Roseau",
+      "tz": "America/Dominica"
+    }
+  ],
+  "Dominican Republic": [
+    {
+      "cc": "DO",
+      "lat": 18.4764,
+      "lon": -69.8933,
+      "name": "Santo Domingo",
+      "tz": "America/Santo_Domingo"
+    }
+  ]
+}

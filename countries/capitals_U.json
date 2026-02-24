@@ -1,0 +1,65 @@
+{
+  "Uganda": [
+    {
+      "cc": "UG",
+      "lat": 0.3136,
+      "lon": 32.5811,
+      "name": "Kampala",
+      "tz": "Africa/Kampala"
+    }
+  ],
+  "Ukraine": [
+    {
+      "cc": "UA",
+      "lat": 50.45,
+      "lon": 30.5236,
+      "name": "Kiev",
+      "tz": "Europe/Kiev"
+    }
+  ],
+  "United Arab Emirates": [
+    {
+      "cc": "AE",
+      "lat": 24.4667,
+      "lon": 54.3667,
+      "name": "Abu Dhabi",
+      "tz": "Asia/Dubai"
+    }
+  ],
+  "United Kingdom": [
+    {
+      "cc": "GB",
+      "lat": 51.5072,
+      "lon": -0.1276,
+      "name": "London",
+      "tz": "Europe/London"
+    }
+  ],
+  "United States of America": [
+    {
+      "cc": "US",
+      "lat": 38.8951,
+      "lon": -77.0364,
+      "name": "Washington, D.C.",
+      "tz": "America/New_York"
+    }
+  ],
+  "Uruguay": [
+    {
+      "cc": "UY",
+      "lat": -34.8836,
+      "lon": -56.1819,
+      "name": "Montevideo",
+      "tz": "America/Montevideo"
+    }
+  ],
+  "Uzbekistan": [
+    {
+      "cc": "UZ",
+      "lat": 41.2995,
+      "lon": 69.2401,
+      "name": "Tashkent",
+      "tz": "Asia/Tashkent"
+    }
+  ]
+}

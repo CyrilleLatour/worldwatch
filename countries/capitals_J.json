@@ -1,0 +1,29 @@
+{
+  "Jamaica": [
+    {
+      "cc": "JM",
+      "lat": 17.9714,
+      "lon": -76.7931,
+      "name": "Kingston",
+      "tz": "America/Jamaica"
+    }
+  ],
+  "Japan": [
+    {
+      "cc": "JP",
+      "lat": 35.6895,
+      "lon": 139.6917,
+      "name": "Tokyo",
+      "tz": "Asia/Tokyo"
+    }
+  ],
+  "Jordan": [
+    {
+      "cc": "JO",
+      "lat": 31.95,
+      "lon": 35.9333,
+      "name": "Amman",
+      "tz": "Asia/Amman"
+    }
+  ]
+}

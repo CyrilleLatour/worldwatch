@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">MovWatch</string>
+    <string name="title_activity_main">Montre App</string>
+    <string name="package_name">com.latour.montreapp</string>
+    <string name="custom_url_scheme">com.latour.montreapp</string>
+</resources>

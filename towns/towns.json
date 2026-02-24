@@ -1,0 +1,151 @@
+{
+  "WorldTowns": [
+    {
+      "name": "Zurich",
+      "cc": "CH",
+      "tz": "Europe/Zurich",
+      "lon": 8.5417,
+      "lat": 47.3769
+    },
+    {
+      "name": "Lyon",
+      "cc": "FR",
+      "tz": "Europe/Paris",
+      "lon": 4.8357,
+      "lat": 45.764
+    },
+    {
+      "name": "Bordeaux",
+      "cc": "FR",
+      "tz": "Europe/Paris",
+      "lon": -0.5792,
+      "lat": 44.8378
+    },
+    {
+      "name": "Toronto",
+      "cc": "CA",
+      "tz": "America/Toronto",
+      "lon": -79.3832,
+      "lat": 43.6532
+    },
+    {
+      "name": "Vancouver",
+      "cc": "CA",
+      "tz": "America/Vancouver",
+      "lon": -123.1216,
+      "lat": 49.2827
+    },
+    {
+      "name": "Sydney",
+      "cc": "AU",
+      "tz": "Australia/Sydney",
+      "lon": 151.2093,
+      "lat": -33.8688
+    },
+    {
+      "name": "Melbourne",
+      "cc": "AU",
+      "tz": "Australia/Melbourne",
+      "lon": 144.9631,
+      "lat": -37.8136
+    },
+    {
+      "name": "Brisbane",
+      "cc": "AU",
+      "tz": "Australia/Brisbane",
+      "lon": 153.0251,
+      "lat": -27.4698
+    },
+    {
+      "name": "Perth",
+      "cc": "AU",
+      "tz": "Australia/Perth",
+      "lon": 115.8575,
+      "lat": -31.9505
+    },
+    {
+      "name": "Adelaide",
+      "cc": "AU",
+      "tz": "Australia/Adelaide",
+      "lon": 138.6007,
+      "lat": -34.9285
+    },
+    {
+      "name": "Geneva",
+      "cc": "CH",
+      "tz": "Europe/Zurich",
+      "lon": 6.15,
+      "lat": 46.2
+    },
+    {
+      "name": "Shanghai",
+      "cc": "CN",
+      "tz": "Asia/Shanghai",
+      "lon": 121.4737,
+      "lat": 31.2304
+    },
+    {
+      "name": "Osaka",
+      "cc": "JP",
+      "tz": "Asia/Tokyo",
+      "lon": 135.5022,
+      "lat": 34.6937
+    },
+    {
+      "name": "New York",
+      "cc": "US",
+      "tz": "America/New_York",
+      "lon": -74.0060,
+      "lat": 40.7128
+    },
+    {
+      "name": "Chicago",
+      "cc": "US",
+      "tz": "America/Chicago",
+      "lon": -87.6298,
+      "lat": 41.8781
+    },
+    {
+      "name": "Austin",
+      "cc": "US",
+      "tz": "America/Chicago",
+      "lon": -97.7431,
+      "lat": 30.2672
+    },
+    {
+      "name": "Los Angeles",
+      "cc": "US",
+      "tz": "America/Los_Angeles",
+      "lon": -118.2437,
+      "lat": 34.0522
+    },
+    {
+      "name": "Miami",
+      "cc": "US",
+      "tz": "America/New_York",
+      "lon": -80.1918,
+      "lat": 25.7617
+    },
+    {
+      "name": "New Orleans",
+      "cc": "US",
+      "tz": "America/Chicago",
+      "lon": -90.0715,
+      "lat": 29.9511
+    },
+    {
+      "name": "Seattle",
+      "cc": "US",
+      "tz": "America/Los_Angeles",
+      "lon": -122.3321,
+      "lat": 47.6062
+    },
+    {
+      "name": "Istanbul",
+      "cc": "TR",
+      "tz": "Europe/Istanbul",
+      "lon": 28.9784,
+      "lat": 41.0082
+    }
+  ]
+}

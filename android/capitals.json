@@ -1,0 +1,797 @@
+{
+  "Afghanistan": [
+    {
+      "name": "Kabul",
+      "cc": "AF",
+      "tz": "Asia/Kabul",
+      "lon": 69.1833,
+      "lat": 34.5167
+    }
+  ],
+  "Albania": [
+    {
+      "name": "Tirana",
+      "cc": "AL",
+      "tz": "Europe/Tirane",
+      "lon": 19.8189,
+      "lat": 41.3275
+    }
+  ],
+  "Algeria": [
+    {
+      "name": "Algiers",
+      "cc": "DZ",
+      "tz": "Africa/Algiers",
+      "lon": 3.0506,
+      "lat": 36.7394
+    }
+  ],
+  "Andorra": [
+    {
+      "name": "Andorra la Vella",
+      "cc": "AD",
+      "tz": "Europe/Andorra",
+      "lon": 1.5211,
+      "lat": 42.5078
+    }
+  ],
+  "Angola": [
+    {
+      "name": "Luanda",
+      "cc": "AO",
+      "tz": "Africa/Luanda",
+      "lon": 13.2344,
+      "lat": -8.8383
+    }
+  ],
+  "Argentina": [
+    {
+      "name": "Buenos Aires",
+      "cc": "AR",
+      "tz": "America/Argentina/Buenos_Aires",
+      "lon": -58.3816,
+      "lat": -34.6037
+    }
+  ],
+  "Armenia": [
+    {
+      "name": "Yerevan",
+      "cc": "AM",
+      "tz": "Asia/Yerevan",
+      "lon": 44.5167,
+      "lat": 40.1833
+    }
+  ],
+  "Australia": [
+    {
+      "name": "Canberra",
+      "cc": "AU",
+      "tz": "Australia/Sydney",
+      "lon": 149.1281,
+      "lat": -35.2835
+    }
+  ],
+  "Austria": [
+    {
+      "name": "Vienna",
+      "cc": "AT",
+      "tz": "Europe/Vienna",
+      "lon": 16.3738,
+      "lat": 48.2082
+    }
+  ],
+  "Azerbaijan": [
+    {
+      "name": "Baku",
+      "cc": "AZ",
+      "tz": "Asia/Baku",
+      "lon": 49.8822,
+      "lat": 40.3953
+    }
+  ],
+  "Bahamas": [
+    {
+      "name": "Nassau",
+      "cc": "BS",
+      "tz": "America/Nassau",
+      "lon": -77.35,
+      "lat": 25.0833
+    }
+  ],
+  "Bahrain": [
+    {
+      "name": "Manama",
+      "cc": "BH",
+      "tz": "Asia/Bahrain",
+      "lon": 50.5831,
+      "lat": 26.2167
+    }
+  ],
+  "Bangladesh": [
+    {
+      "name": "Dhaka",
+      "cc": "BD",
+      "tz": "Asia/Dhaka",
+      "lon": 90.4125,
+      "lat": 23.8103
+    }
+  ],
+  "Belarus": [
+    {
+      "name": "Minsk",
+      "cc": "BY",
+      "tz": "Europe/Minsk",
+      "lon": 27.5667,
+      "lat": 53.9006
+    }
+  ],
+  "Belgium": [
+    {
+      "name": "Brussels",
+      "cc": "BE",
+      "tz": "Europe/Brussels",
+      "lon": 4.3525,
+      "lat": 50.8467
+    }
+  ],
+  "Belize": [
+    {
+      "name": "Belmopan",
+      "cc": "BZ",
+      "tz": "America/Belize",
+      "lon": -88.7667,
+      "lat": 17.25
+    }
+  ],
+  "Benin": [
+    {
+      "name": "Porto-Novo",
+      "cc": "BJ",
+      "tz": "Africa/Porto-Novo",
+      "lon": 2.6167,
+      "lat": 6.4833
+    }
+  ],
+  "Bhutan": [
+    {
+      "name": "Thimphu",
+      "cc": "BT",
+      "tz": "Asia/Thimphu",
+      "lon": 89.6419,
+      "lat": 27.4661
+    }
+  ],
+  "Bolivia": [
+    {
+      "name": "La Paz",
+      "cc": "BO",
+      "tz": "America/La_Paz",
+      "lon": -68.1193,
+      "lat": -16.5
+    },
+    {
+      "name": "Sucre",
+      "cc": "BO",
+      "tz": "America/La_Paz",
+      "lon": -65.2627,
+      "lat": -19.0333
+    }
+  ],
+  "Bosnia and Herzegovina": [
+    {
+      "name": "Sarajevo",
+      "cc": "BA",
+      "tz": "Europe/Sarajevo",
+      "lon": 18.4131,
+      "lat": 43.8563
+    }
+  ],
+  "Botswana": [
+    {
+      "name": "Gaborone",
+      "cc": "BW",
+      "tz": "Africa/Gaborone",
+      "lon": 25.9086,
+      "lat": -24.6569
+    }
+  ],
+  "Brazil": [
+    {
+      "name": "Brasilia",
+      "cc": "BR",
+      "tz": "America/Sao_Paulo",
+      "lon": -47.9292,
+      "lat": -15.7801
+    }
+  ],
+  "Bulgaria": [
+    {
+      "name": "Sofia",
+      "cc": "BG",
+      "tz": "Europe/Sofia",
+      "lon": 23.3219,
+      "lat": 42.6977
+    }
+  ],
+  "Burkina Faso": [
+    {
+      "name": "Ouagadougou",
+      "cc": "BF",
+      "tz": "Africa/Ouagadougou",
+      "lon": -1.5275,
+      "lat": 12.3703
+    }
+  ],
+  "Burundi": [
+    {
+      "name": "Gitega",
+      "cc": "BI",
+      "tz": "Africa/Bujumbura",
+      "lon": 29.9306,
+      "lat": -3.4264
+    }
+  ],
+  "Cambodia": [
+    {
+      "name": "Phnom Penh",
+      "cc": "KH",
+      "tz": "Asia/Phnom_Penh",
+      "lon": 104.916,
+      "lat": 11.55
+    }
+  ],
+  "Cameroon": [
+    {
+      "name": "Yaounde",
+      "cc": "CM",
+      "tz": "Africa/Douala",
+      "lon": 11.517,
+      "lat": 3.857
+    }
+  ],
+  "Canada": [
+    {
+      "name": "Ottawa",
+      "cc": "CA",
+      "tz": "America/Toronto",
+      "lon": -75.6972,
+      "lat": 45.4215
+    }
+  ],
+  "Chile": [
+    {
+      "name": "Santiago",
+      "cc": "CL",
+      "tz": "America/Santiago",
+      "lon": -70.6483,
+      "lat": -33.4569
+    }
+  ],
+  "China": [
+    {
+      "name": "Beijing",
+      "cc": "CN",
+      "tz": "Asia/Shanghai",
+      "lon": 116.4074,
+      "lat": 39.9042
+    }
+  ],
+  "Colombia": [
+    {
+      "name": "Bogota",
+      "cc": "CO",
+      "tz": "America/Bogota",
+      "lon": -74.0817,
+      "lat": 4.6097
+    }
+  ],
+  "Costa Rica": [
+    {
+      "name": "San Jose",
+      "cc": "CR",
+      "tz": "America/Costa_Rica",
+      "lon": -84.0907,
+      "lat": 9.9347
+    }
+  ],
+  "Croatia": [
+    {
+      "name": "Zagreb",
+      "cc": "HR",
+      "tz": "Europe/Zagreb",
+      "lon": 15.9779,
+      "lat": 45.815
+    }
+  ],
+  "Cuba": [
+    {
+      "name": "Havana",
+      "cc": "CU",
+      "tz": "America/Havana",
+      "lon": -82.3666,
+      "lat": 23.133
+    }
+  ],
+  "Cyprus": [
+    {
+      "name": "Nicosia",
+      "cc": "CY",
+      "tz": "Asia/Nicosia",
+      "lon": 33.3823,
+      "lat": 35.1856
+    }
+  ],
+  "Czech Republic": [
+    {
+      "name": "Prague",
+      "cc": "CZ",
+      "tz": "Europe/Prague",
+      "lon": 14.4208,
+      "lat": 50.088
+    }
+  ],
+  "Denmark": [
+    {
+      "name": "Copenhagen",
+      "cc": "DK",
+      "tz": "Europe/Copenhagen",
+      "lon": 12.5683,
+      "lat": 55.6761
+    }
+  ],
+  "Egypt": [
+    {
+      "name": "Cairo",
+      "cc": "EG",
+      "tz": "Africa/Cairo",
+      "lon": 31.2357,
+      "lat": 30.0444
+    }
+  ],
+  "Estonia": [
+    {
+      "name": "Tallinn",
+      "cc": "EE",
+      "tz": "Europe/Tallinn",
+      "lon": 24.7536,
+      "lat": 59.437
+    }
+  ],
+  "Finland": [
+    {
+      "name": "Helsinki",
+      "cc": "FI",
+      "tz": "Europe/Helsinki",
+      "lon": 24.9384,
+      "lat": 60.1699
+    }
+  ],
+  "France": [
+    {
+      "name": "Paris",
+      "cc": "FR",
+      "tz": "Europe/Paris",
+      "lon": 2.3522,
+      "lat": 48.8566
+    }
+  ],
+  "Germany": [
+    {
+      "name": "Berlin",
+      "cc": "DE",
+      "tz": "Europe/Berlin",
+      "lon": 13.405,
+      "lat": 52.52
+    }
+  ],
+  "Greece": [
+    {
+      "name": "Athens",
+      "cc": "GR",
+      "tz": "Europe/Athens",
+      "lon": 23.7275,
+      "lat": 37.9838
+    }
+  ],
+  "Hungary": [
+    {
+      "name": "Budapest",
+      "cc": "HU",
+      "tz": "Europe/Budapest",
+      "lon": 19.0402,
+      "lat": 47.4979
+    }
+  ],
+  "Iceland": [
+    {
+      "name": "Reykjavik",
+      "cc": "IS",
+      "tz": "Atlantic/Reykjavik",
+      "lon": -21.9333,
+      "lat": 64.1333
+    }
+  ],
+  "India": [
+    {
+      "name": "New Delhi",
+      "cc": "IN",
+      "tz": "Asia/Kolkata",
+      "lon": 77.209,
+      "lat": 28.6139
+    }
+  ],
+  "Indonesia": [
+    {
+      "name": "Jakarta",
+      "cc": "ID",
+      "tz": "Asia/Jakarta",
+      "lon": 106.8456,
+      "lat": -6.2088
+    }
+  ],
+  "Iran": [
+    {
+      "name": "Tehran",
+      "cc": "IR",
+      "tz": "Asia/Tehran",
+      "lon": 51.389,
+      "lat": 35.6892
+    }
+  ],
+  "Iraq": [
+    {
+      "name": "Baghdad",
+      "cc": "IQ",
+      "tz": "Asia/Baghdad",
+      "lon": 44.3661,
+      "lat": 33.3152
+    }
+  ],
+  "Ireland": [
+    {
+      "name": "Dublin",
+      "cc": "IE",
+      "tz": "Europe/Dublin",
+      "lon": -6.2603,
+      "lat": 53.3498
+    }
+  ],
+  "Israel": [
+    {
+      "name": "Jerusalem",
+      "cc": "IL",
+      "tz": "Asia/Jerusalem",
+      "lon": 35.2137,
+      "lat": 31.7683
+    }
+  ],
+  "Italy": [
+    {
+      "name": "Rome",
+      "cc": "IT",
+      "tz": "Europe/Rome",
+      "lon": 12.4964,
+      "lat": 41.9028
+    }
+  ],
+  "Japan": [
+    {
+      "name": "Tokyo",
+      "cc": "JP",
+      "tz": "Asia/Tokyo",
+      "lon": 139.6917,
+      "lat": 35.6895
+    }
+  ],
+  "Kenya": [
+    {
+      "name": "Nairobi",
+      "cc": "KE",
+      "tz": "Africa/Nairobi",
+      "lon": 36.8219,
+      "lat": -1.2921
+    }
+  ],
+  "Mexico": [
+    {
+      "name": "Mexico City",
+      "cc": "MX",
+      "tz": "America/Mexico_City",
+      "lon": -99.1332,
+      "lat": 19.4326
+    }
+  ],
+  "Morocco": [
+    {
+      "name": "Rabat",
+      "cc": "MA",
+      "tz": "Africa/Casablanca",
+      "lon": -6.8369,
+      "lat": 34.0209
+    }
+  ],
+  "Netherlands": [
+    {
+      "name": "Amsterdam",
+      "cc": "NL",
+      "tz": "Europe/Amsterdam",
+      "lon": 4.9041,
+      "lat": 52.3676
+    }
+  ],
+  "New Zealand": [
+    {
+      "name": "Wellington",
+      "cc": "NZ",
+      "tz": "Pacific/Auckland",
+      "lon": 174.7762,
+      "lat": -41.2865
+    }
+  ],
+  "Nigeria": [
+    {
+      "name": "Abuja",
+      "cc": "NG",
+      "tz": "Africa/Lagos",
+      "lon": 7.4951,
+      "lat": 9.0579
+    }
+  ],
+  "Norway": [
+    {
+      "name": "Oslo",
+      "cc": "NO",
+      "tz": "Europe/Oslo",
+      "lon": 10.7522,
+      "lat": 59.9139
+    }
+  ],
+  "Pakistan": [
+    {
+      "name": "Islamabad",
+      "cc": "PK",
+      "tz": "Asia/Karachi",
+      "lon": 73.0551,
+      "lat": 33.6844
+    }
+  ],
+  "Peru": [
+    {
+      "name": "Lima",
+      "cc": "PE",
+      "tz": "America/Lima",
+      "lon": -77.0428,
+      "lat": -12.0464
+    }
+  ],
+  "Philippines": [
+    {
+      "name": "Manila",
+      "cc": "PH",
+      "tz": "Asia/Manila",
+      "lon": 120.9842,
+      "lat": 14.5995
+    }
+  ],
+  "Poland": [
+    {
+      "name": "Warsaw",
+      "cc": "PL",
+      "tz": "Europe/Warsaw",
+      "lon": 21.0118,
+      "lat": 52.2297
+    }
+  ],
+  "Portugal": [
+    {
+      "name": "Lisbon",
+      "cc": "PT",
+      "tz": "Europe/Lisbon",
+      "lon": -9.139,
+      "lat": 38.7169
+    }
+  ],
+  "Qatar": [
+    {
+      "name": "Doha",
+      "cc": "QA",
+      "tz": "Asia/Qatar",
+      "lon": 51.531,
+      "lat": 25.2867
+    }
+  ],
+  "Romania": [
+    {
+      "name": "Bucharest",
+      "cc": "RO",
+      "tz": "Europe/Bucharest",
+      "lon": 26.1025,
+      "lat": 44.4268
+    }
+  ],
+  "Russia": [
+    {
+      "name": "Moscow",
+      "cc": "RU",
+      "tz": "Europe/Moscow",
+      "lon": 37.6173,
+      "lat": 55.7558
+    }
+  ],
+  "Saudi Arabia": [
+    {
+      "name": "Riyadh",
+      "cc": "SA",
+      "tz": "Asia/Riyadh",
+      "lon": 46.7219,
+      "lat": 24.6877
+    }
+  ],
+  "Serbia": [
+    {
+      "name": "Belgrade",
+      "cc": "RS",
+      "tz": "Europe/Belgrade",
+      "lon": 20.4569,
+      "lat": 44.8176
+    }
+  ],
+  "Singapore": [
+    {
+      "name": "Singapore",
+      "cc": "SG",
+      "tz": "Asia/Singapore",
+      "lon": 103.8198,
+      "lat": 1.3521
+    }
+  ],
+  "Slovakia": [
+    {
+      "name": "Bratislava",
+      "cc": "SK",
+      "tz": "Europe/Bratislava",
+      "lon": 17.1077,
+      "lat": 48.1482
+    }
+  ],
+  "Slovenia": [
+    {
+      "name": "Ljubljana",
+      "cc": "SI",
+      "tz": "Europe/Ljubljana",
+      "lon": 14.5058,
+      "lat": 46.0569
+    }
+  ],
+  "South Africa": [
+    {
+      "name": "Pretoria",
+      "cc": "ZA",
+      "tz": "Africa/Johannesburg",
+      "lon": 28.2293,
+      "lat": -25.7461
+    },
+    {
+      "name": "Cape Town",
+      "cc": "ZA",
+      "tz": "Africa/Johannesburg",
+      "lon": 18.4233,
+      "lat": -33.9189
+    },
+    {
+      "name": "Bloemfontein",
+      "cc": "ZA",
+      "tz": "Africa/Johannesburg",
+      "lon": 26.2299,
+      "lat": -29.0852
+    }
+  ],
+  "South Korea": [
+    {
+      "name": "Seoul",
+      "cc": "KR",
+      "tz": "Asia/Seoul",
+      "lon": 126.978,
+      "lat": 37.5665
+    }
+  ],
+  "Spain": [
+    {
+      "name": "Madrid",
+      "cc": "ES",
+      "tz": "Europe/Madrid",
+      "lon": -3.7038,
+      "lat": 40.4168
+    }
+  ],
+  "Sweden": [
+    {
+      "name": "Stockholm",
+      "cc": "SE",
+      "tz": "Europe/Stockholm",
+      "lon": 18.0649,
+      "lat": 59.3326
+    }
+  ],
+  "Switzerland": [
+    {
+      "name": "Bern",
+      "cc": "CH",
+      "tz": "Europe/Zurich",
+      "lon": 7.4474,
+      "lat": 46.9481
+    }
+  ],
+  "Thailand": [
+    {
+      "name": "Bangkok",
+      "cc": "TH",
+      "tz": "Asia/Bangkok",
+      "lon": 100.5018,
+      "lat": 13.7563
+    }
+  ],
+  "Turkey": [
+    {
+      "name": "Ankara",
+      "cc": "TR",
+      "tz": "Europe/Istanbul",
+      "lon": 32.8543,
+      "lat": 39.9208
+    }
+  ],
+  "Ukraine": [
+    {
+      "name": "Kyiv",
+      "cc": "UA",
+      "tz": "Europe/Kiev",
+      "lon": 30.5238,
+      "lat": 50.4547
+    }
+  ],
+  "United Arab Emirates": [
+    {
+      "name": "Abu Dhabi",
+      "cc": "AE",
+      "tz": "Asia/Dubai",
+      "lon": 54.3773,
+      "lat": 24.4539
+    }
+  ],
+  "United Kingdom": [
+    {
+      "name": "London",
+      "cc": "GB",
+      "tz": "Europe/London",
+      "lon": -0.1276,
+      "lat": 51.5072
+    }
+  ],
+  "United States of America": [
+    {
+      "name": "Washington, D.C.",
+      "cc": "US",
+      "tz": "America/New_York",
+      "lon": -77.0369,
+      "lat": 38.9072
+    }
+  ],
+  "Venezuela": [
+    {
+      "name": "Caracas",
+      "cc": "VE",
+      "tz": "America/Caracas",
+      "lon": -66.9036,
+      "lat": 10.4806
+    }
+  ],
+  "Vietnam": [
+    {
+      "name": "Hanoi",
+      "cc": "VN",
+      "tz": "Asia/Bangkok",
+      "lon": 105.8544,
+      "lat": 21.0285
+    }
+  ]
+}

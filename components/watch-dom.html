@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Analog Watch — Mobile Frame</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- (Optionnel) PWA -->
+  <link rel="manifest" href="/manifest.webmanifest">
+  <meta name="theme-color" content="#111111">
+
+  <!-- Styles globaux de la montre -->
+  <link rel="stylesheet" href="watch-styles.css">
+</head>
+<body>
+  <div class="phone" id="phone">
+    <div class="screen">
+      <!-- Header -->
+      <div class="header">
+        <!-- Ville par défaut: Geneva (le style non-gras/noir sera appliqué via watch-styles.css) -->
+        <div class="city-name" id="city">Geneva</div>
+
+        <!-- Menu "town" (toujours présent) -->
+        <button class="tz-button" type="button" id="tzBtn" aria-haspopup="listbox" aria-expanded="false">town</button>
+        <div class="tz-menu" id="tzMenu" role="listbox" aria-label="Choose a town">
+          <div class="tz-menu-header">
+            <input id="tzSearch" type="text" placeholder="Search a town…"
+                   style="width:100%; box-sizing:border-box; font-size:12px; padding:6px 8px; border:1px solid #000; border-radius:6px;">
+          </div>
+          <div class="tz-menu-list" id="tzList"></div>
+        </div>
+      </div>
+
+      <!-- Watch area -->
+      <div class="center-pane">
+        <div class="watch" id="watch">
+          <div class="hand hour" id="hour"></div>
+          <div class="hand minute" id="minute"></div>
+          <div class="hand second" id="second"></div>
+          <div class="center-dot"></div>
+          <div class="digital" id="digital"></div>
+
+          <div class="week-box box" id="week"></div>
+          <div class="day-box box" id="day"></div>
+
+          <div class="month-cluster" id="monthCluster">
+            <div class="month-box box" id="month"></div>
+            <div class="week-label">week</div>
+            <div class="weeknum-box box" id="weeknum"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Map row -->
+      <div class="footer">
+        <!-- Bouton pour afficher la carte (toujours présent) -->
+        <button class="map-button" id="showMapBtn" type="button">map</button>
+
+        <!-- Zone carte (masquée au départ) -->
+        <div id="mapArea" style="display:none">
+          <div class="map-container" style="position:relative;">
+            <svg id="map" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid meet"></svg>
+
+            <!-- Bouton HTML cliquable; la croix visible est dessinée en SVG (via map-d3.js) -->
+            <button id="closeMapBtn" class="close-map-btn" aria-label="Close map">×</button>
+          </div>
+
+          <!-- Sunrise / Solar noon / Sunset -->
+          <div class="sun-row">
+            sunrise: <b id="sunrise">--:--</b>
+            <span class="sep">•</span>
+            solar noon: <b id="solarNoon">--:--</b>
+            <span class="sep">•</span>
+            sunset: <b id="sunset">--:--</b>
+          </div>
+
+          <br><br>
+
+          <!-- Time difference (bouton toujours présent; liste volontairement vide tant que vous n’ajoutez pas d’autres villes) -->
+          <div class="diff-row" id="diffRow">
+            <button class="diff-button" id="diffBtn">time difference</button>
+            <span id="diffOutput"></span>
+
+            <button class="reset-button" id="resetBtn">reset</button>
+
+            <div class="diff-menu" id="diffMenu" role="listbox" aria-label="Choose a city for time difference">
+              <div class="diff-menu-header">
+                <input id="diffSearch" type="text" placeholder="Search a city…"
+                       style="width:100%; box-sizing:border-box; font-size:12px; padding:6px 8px; border:1px solid #000; border-radius:6px;">
+              </div>
+              <div class="diff-list" id="diffList"></div>
+            </div>
+          </div>
+        </div> <!-- /#mapArea -->
+      </div> <!-- /.footer -->
+    </div> <!-- /.screen -->
+  </div> <!-- /.phone -->
+
+  <!-- Librairies pour la carte -->
+  <script src="https://unpkg.com/d3@7"></script>
+  <script src="https://unpkg.com/topojson-client@3"></script>
+
+  <!-- Core de la montre, puis carte, puis menus, puis handlers (ordre important) -->
+  <script src="components/watch-core.js"></script>
+  <script src="components/map-d3.js"></script>
+  <script src="components/ui-menus.js"></script>
+  <script src="components/event-handlers.js"></script>
+</body>
+</html>

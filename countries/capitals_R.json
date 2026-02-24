@@ -1,0 +1,30 @@
+capitals_R.json
+{
+  "Romania": [
+    {
+      "cc": "RO",
+      "lat": 44.4328,
+      "lon": 26.1043,
+      "name": "Bucharest",
+      "tz": "Europe/Bucharest"
+    }
+  ],
+  "Russia": [
+    {
+      "cc": "RU",
+      "lat": 55.7558,
+      "lon": 37.6173,
+      "name": "Moscow",
+      "tz": "Europe/Moscow"
+    }
+  ],
+  "Rwanda": [
+    {
+      "cc": "RW",
+      "lat": -1.9536,
+      "lon": 30.0606,
+      "name": "Kigali",
+      "tz": "Africa/Kigali"
+    }
+  ]
+}

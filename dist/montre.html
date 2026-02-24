@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Analog Watch – Mobile Frame</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="manifest" href="/manifest.webmanifest">
+  <meta name="theme-color" content="#111111">
+  <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      /* --- Layout existant --- */
+      --map-offset: -30px;      /* carte du monde */
+      --sun-offset: -20px;      /* sunrise / noon / sunset */
+      --diff-offset: -30px;     /* bouton time difference */
+      --reset-offset: 30px;     /* emplacement vertical du bouton reset */
+      --mapbtn-offset: -300px;  /* emplacement vertical du bouton map */
+
+      /* --- Croix (tout pilotable ici) --- */
+      --close-offset-x: 10px;    /* distance depuis la gauche (px) */
+      --close-offset-y: 20px;   /* distance depuis le bas (px) */
+      --close-size: 20;         /* TAILLE visuelle de la croix (px) */
+      --close-stroke: 5;        /* ÉPAISSEUR des branches (px) */
+      --close-color-day: orange;      /* couleur sur la zone de JOUR */
+      --close-color-night: orange; /* couleur sur la zone de NUIT */
+    }
+
+    html, body { height:100%; margin:0; background:#e9ecef; display:grid; place-items:center; font-family:Arial,Helvetica,sans-serif; }
+
+    .phone {
+      position:relative; width:min(390px,92vw); aspect-ratio:9/19.5; background:#f8f9fa;
+      border:12px solid #111; border-radius:34px; box-shadow:0 20px 60px rgba(0,0,0,.25), inset 0 0 0 1px rgba(255,255,255,.06); overflow:hidden;
+    }
+
+    .screen { position:absolute; inset:20px 14px 20px; display:grid; grid-template-rows:auto 1fr auto; align-items:start; row-gap:0; }
+
+    /* ===== Header ===== */
+    .header { position:relative; height:44px; display:flex; align-items:center; justify-content:center; }
+    .city-name { font-weight:700; font-size:30px; color:blue; pointer-events:none; }
+    .tz-button {
+      position:absolute; right:15px; top:8px; font-size:12px; padding:8px 10px;
+      border:1px solid #000; background:#fff; color:#000; border-radius:8px; cursor:pointer; user-select:none; z-index:20;
+    }
+    .tz-button:hover { background:red; border-color:red; color:#fff; }
+
+    .tz-menu {
+      position:absolute; right:0; top:44px; width:240px; background:#fff; border:1px solid #000; border-radius:8px;
+      box-shadow:0 8px 24px rgba(0,0,0,.15); z-index:1000; overflow:hidden; display:none;
+    }
+    .tz-menu.show { display:block; }
+    .tz-menu-header { padding:8px 10px; font-size:12px; font-weight:600; background:#f1f1f1; border-bottom:1px solid #000; }
+    .tz-menu-list { max-height:320px; overflow-y:auto; -webkit-overflow-scrolling:touch; overscroll-behavior:contain; }
+    .tz-item {
+      height:32px; line-height:32px; padding:0 10px; font-size:13px; cursor:pointer; white-space:nowrap;
+      display:flex; align-items:center; justify-content:space-between; gap:8px;
+    }
+    .tz-item:hover,.tz-item:focus { background:#e9f2ff; outline:none; }
+    .tz-item.active { background:#d7ecff; font-weight:600; }
+    .tz-cc { font-size:12px; color:#333; opacity:.85; flex:0 0 auto; }
+
+    /* ===== Watch area ===== */
+    .center-pane { position:relative; display:grid; align-content:start; justify-items:center; padding-top:25px; }
+    .watch { position:relative; width:300px; height:300px; border:8px solid #000; border-radius:50%; top:-17px; background:#fff; overflow:hidden; }
+    .hand { position:absolute; bottom:50%; left:50%; transform:translateX(-50%) rotate(0deg); transform-origin:bottom center; background:#000; }
+    .hand.hour{ width:6px; height:70px; z-index:10; } .hand.minute{ width:4px; height:100px; z-index:9; }
+    .hand.second{ width:2px; height:120px; z-index:8; background:#e00; }
+    .center-dot{ position:absolute; width:14px; height:14px; background:#000; border-radius:50%; top:50%; left:50%; transform:translate(-50%,-50%); z-index:20; }
+    .dot{ position:absolute; width:10px; height:10px; background:#000; border-radius:50%; }
+    .min-dot{ position:absolute; width:5px; height:5px; background:#000; border-radius:50%; opacity:.9; }
+    .mark-wrap{ position:absolute; left:50%; top:50%; transform-origin:center center; }
+    .main-mark{
+      position:absolute; left:50%; top:50%; width:6px; height:30px; background:#000; border-radius:3px;
+      transform-origin:50% 100%; transform:translate(-50%, var(--edge-translate,-150px));
+    }
+    .digital{ position:absolute; left:50%; top:58%; transform:translateX(-50%); font:14px/1 Arial,sans-serif; color:#111; z-index:20; }
+
+    .box{
+      display:inline-flex; align-items:center; justify-content:center; background:#fff; color:#000; border:1px solid #000; border-radius:4px;
+      font:12px/1 Arial,sans-serif; white-space:nowrap; z-index:5;
+    }
+    .day-box{ position:absolute; top:50%; left:85%; transform:translate(-50%,-50%); width:20px; height:20px; }
+    .week-box{ position:absolute; top:50%; left:75%; transform:translate(-50%,-50%); text-transform:lowercase; width:24px; height:20px; }
+    .month-cluster{ position:absolute; top:50%; left:25%; transform:translate(-50%, -50%); display:inline-flex; align-items:center; gap:6px; z-index:5; }
+    .month-box{ width:30px; height:20px; } .week-label{ font:11px/1 Arial,sans-serif; color:#000; user-select:none; } .weeknum-box{ width:20px; height:20px; }
+    .hour-num{ position:absolute; transform:translate(-50%,-50%); font-family:'Comic Neue','Comic Sans MS','Comic Sans',cursive; font-weight:700; color:blue; line-height:1; user-select:none; pointer-events:none; }
+
+    /* ===== Map ===== */
+    .footer { display:block; }
+    .map-container{
+      position:relative; z-index:1; width:100%; aspect-ratio: 2 / 1; background: transparent; border:1px solid #000; top: var(--map-offset); overflow:hidden;
+    }
+    .map-container svg{ width:100%; height:100%; display:block; }
+    .land{ fill:#fff; } .boundary{ fill:none; stroke:#444; stroke-width:.6px; }
+    .graticule{ fill:none; stroke:#ccc; stroke-opacity:.3; stroke-width:.5px; }
+    .sphere{ fill:#add8e6; stroke:#333; }
+
+    /* === City marker: blink via opacity === */
+    .city-marker{ stroke:white; stroke-width:1px; opacity:1 }
+    @keyframes cityBlink { 0%{opacity:0;} 50%{opacity:1;} 100%{opacity:0;} }
+    .city-marker.pulse { animation: cityBlink 1s ease-in-out infinite; }
+
+    /* === Sun row === */
+    .sun-row{ position:relative; top: var(--sun-offset); text-align:center; font:12px/1.2 Arial,Helvetica,sans-serif; }
+    .sun-row b{ font-weight:700; }
+    .sun-row .sep{ margin:0 .5em; opacity:.6; }
+
+    /* === Time difference row === */
+    .diff-row{ position:relative; top: var(--diff-offset); text-align:center; font:14px/1.4 Arial,Helvetica,sans-serif; }
+    .diff-button{
+      margin-left:8px; padding:6px 10px; font-size:12px; border:1px solid #000; background:#fff; color:#000; border-radius:8px; cursor:pointer;
+    }
+    .diff-button:hover{ background:#f3f3f3; }
+    .diff-output{ margin-left:6px; font-weight:700; }
+
+    /* === FENÊTRE "time difference" — 10 villes max, positionnée correctement === */
+    .diff-menu {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 30px;
+    width: 240px;
+    max-height: calc(32px * 10 + 40px);
+    overflow: hidden;
+    display: none;
+    background: #fff;
+    border: 1px solid #000;
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0,0,0,.15);
+    z-index: 1000;
+    }
+    .diff-menu.show { display:block; }
+    .diff-menu-header {
+    padding:8px 10px;
+    font-size:12px;
+    font-weight:600;
+    background:#f1f1f1;
+    border-bottom:1px solid #000;
+    }
+    .diff-list {
+    max-height: calc(32px * 10);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    }
+
+    .diff-item {
+    height:32px; line-height:32px; padding:0 10px; font-size:13px; cursor:pointer; white-space:nowrap;
+    display:flex; align-items:center; justify-content:space-between; gap:8px;
+    }
+    .diff-item:hover,.diff-item:focus { background:#e9f2ff; outline:none; }
+    .diff-item.active { background:#d7ecff; font-weight:600; }
+    .diff-cc { font-size:12px; color:#333; opacity:.85; flex:0 0 auto; }
+
+
+    /* Reset sous le bouton diff */
+    .reset-button {
+      position: absolute; top: var(--reset-offset); left: 50%; transform: translateX(-50%);
+      display:block; margin:8px auto 0; font-size:12px; padding:6px 10px; border:1px solid #000; background:#fff; color:#000; border-radius:8px; cursor:pointer; user-select:none;
+    }
+    .reset-button:hover { background:#f3f3f3; }
+
+    /* === Night overlay & night-only strokes === */
+    .night{ fill:#191970; fill-opacity:.90; pointer-events:none; }
+    .night-only{ fill:none; stroke:#fff; stroke-width:1px; pointer-events:none; }
+
+    /* --- compare city marker + dashed line --- */
+    .compare-marker{ }
+    .compare-line{ fill:none; stroke-dasharray:6,4; pointer-events:none; }
+
+    .map-button{
+      position: absolute; left: 50%; transform: translate(-50%, var(--mapbtn-offset)); z-index: 20;
+      margin: 0; padding: 8px 12px; font-size: 12px; border: 1px solid #000; background: #fff; color: #000; border-radius: 8px; cursor: pointer; user-select: none;
+    }
+    .map-button:hover{ background:#f3f3f3; }
+
+    /* === Close 'X' HTML (zone cliquable) === */
+    .close-map-btn {
+      position: absolute; bottom: var(--close-offset-y); left: var(--close-offset-x);
+      width: calc(var(--close-size) * 1px + 12px);  /* zone de clic un peu plus large que la croix */
+      height: calc(var(--close-size) * 1px + 12px);
+      font-size: 0; font-weight: bold; line-height: 1; border: none; background: transparent; cursor: pointer;
+      z-index: 2000; user-select: none; display:none; padding:0;
+      color: transparent; text-shadow: none; /* le “×” HTML est invisible; la croix visible est dessinée en SVG */
+    }
+  </style>
+</head>
+
+<body>
+  <div class="phone" id="phone">
+    <div class="screen">
+      <!-- Header -->
+      <div class="header">
+        <div class="city-name" id="city">Geneva</div>
+        <button class="tz-button" type="button" id="tzBtn" aria-haspopup="listbox" aria-expanded="false">town</button>
+
+        <div class="tz-menu" id="tzMenu" role="listbox" aria-label="Choose a town">
+          <div class="tz-menu-header">
+            <input id="tzSearch" type="text" placeholder="Search a town…"
+              style="width:100%; box-sizing:border-box; font-size:12px; padding:6px 8px; border:1px solid #000; border-radius:6px;">
+          </div>
+          <div class="tz-menu-list" id="tzList"></div>
+        </div>
+      </div>
+
+      <!-- Watch area -->
+      <div class="center-pane">
+        <div class="watch" id="watch">
+          <div class="hand hour" id="hour"></div>
+          <div class="hand minute" id="minute"></div>
+          <div class="hand second" id="second"></div>
+          <div class="center-dot"></div>
+          <div class="digital" id="digital"></div>
+
+          <div class="week-box box" id="week"></div>
+          <div class="day-box box" id="day"></div>
+
+          <div class="month-cluster" id="monthCluster">
+            <div class="month-box box" id="month"></div><div class="week-label">week</div><div class="weeknum-box box" id="weeknum"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Map row -->
+      <div class="footer">
+        <button class="map-button" id="showMapBtn" type="button">map</button>
+
+        <div id="mapArea" style="display:none">
+          <div class="map-container" style="position:relative; left:-5px">
+            <svg id="map" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid meet"></svg>
+            <!-- Bouton HTML cliquable (texte invisible, croix SVG colorée jour/nuit par masque) -->
+            <button id="closeMapBtn" class="close-map-btn" aria-label="Close map">×</button>
+          </div>
+
+          <!-- Sunrise / Solar noon / Sunset -->
+          <div class="sun-row">
+            sunrise: <b id="sunrise">--:--</b>
+            <span class="sep">•</span>
+            solar noon: <b id="solarNoon">--:--</b>
+            <span class="sep">•</span>
+            sunset: <b id="sunset">--:--</b>
+          </div>
+
+          <br><br>
+
+          <!-- Time difference row -->
+          <div class="diff-row" id="diffRow">
+            <button class="diff-button" id="diffBtn">time difference</button>
+            <span id="diffOutput"></span>
+
+            <button class="reset-button" id="resetBtn">reset</button>
+
+            <div class="diff-menu" id="diffMenu" role="listbox" aria-label="Choose a city for time difference">
+              <div class="diff-menu-header">
+                <input id="diffSearch" type="text" placeholder="Search a city…"
+                  style="width:100%; box-sizing:border-box; font-size:12px; padding:6px 8px; border:1px solid #000; border-radius:6px;">
+              </div>
+              <div class="diff-list" id="diffList"></div>
+            </div>
+          </div>
+        </div> <!-- ← fermeture de #mapArea -->
+      </div> <!-- ← fermeture de .footer -->
+    </div> <!-- /screen -->
+  </div> <!-- /phone -->
+
+  <script>
+    let funTimerId=null,isAnimating=false,lastAngles={h:0,m:0,s:0};
+    let prevSecond = null;
+
+    function pulseMarker(){
+      const el = document.querySelector('.city-marker');
+      if (!el) return;
+      if (window.__isAnimatingMarker) {
+        el.classList.remove('pulse');
+        return;
+      }
+      if (!el.classList.contains('pulse')) el.classList.add('pulse');
+    }
+
+    function queueFunAnimation(d=500){ clearTimeout(funTimerId); funTimerId=setTimeout(startFunAnimation,d); }
+    function mod360(x){ return ((x%360)+360)%360; }
+
+    const phone=document.getElementById('phone'), watch=document.getElementById('watch');
+
+    function layoutWatch(){
+      const screen=phone.querySelector('.screen'), header=phone.querySelector('.header'), footer=phone.querySelector('.footer');
+      const sr=screen.getBoundingClientRect(), hr=header.getBoundingClientRect(), fr=footer.getBoundingClientRect();
+      const verticalPadding=12, availableW=sr.width-8, availableH=sr.height-hr.height-fr.height-verticalPadding*2;
+      const size=Math.floor(Math.min(availableW,availableH)); watch.style.width=size+'px'; watch.style.height=size+'px';
+      drawMarks(size); drawHourNumbers(size);
+    }
+    function drawMarks(size){
+      watch.querySelectorAll('.dot,.min-dot,.mark-wrap').forEach(n=>n.remove());
+      const CENTER=size/2, RADIUS_MARKS=size*.45, RADIUS_EDGE=size/2;
+      watch.style.setProperty('--edge-translate',(-RADIUS_EDGE)+'px');
+      for(let i=0;i<12;i++){
+        const deg=i*30;
+        if(i===0||i===3||i===6||i===9){
+          const w=document.createElement('div'); w.className='mark-wrap'; w.style.transform=`translate(-50%,-50%) rotate(${deg}deg)`;
+          const m=document.createElement('div'); m.className='main-mark'; w.appendChild(m); watch.appendChild(w);
+        } else {
+          const d=document.createElement('div'); d.className='dot';
+          const rad=(deg-90)*Math.PI/180;
+          const x=CENTER+RADIUS_MARKS*Math.cos(rad)-5, y=CENTER+RADIUS_MARKS*Math.sin(rad)-5;
+          d.style.left=`${x}px`; d.style.top=`${y}px`; watch.appendChild(d);
+        }
+      }
+      for(let m=0;m<60;m++){ if(m%5===0) continue;
+        const deg=m*6, rad=(deg-90)*Math.PI/180;
+        const md=document.createElement('div'); md.className='min-dot';
+        const x=CENTER+RADIUS_MARKS*Math.cos(rad)-2.5, y=CENTER+RADIUS_MARKS*Math.sin(rad)-2.5;
+        md.style.left=`${x}px`; md.style.top=`${y}px`; watch.appendChild(md);
+      }
+    }
+    function drawHourNumbers(size){
+      watch.querySelectorAll('.hour-num').forEach(n=>n.remove());
+      const CENTER=size/2, RADIUS_NUM=size*.36, fontPx=Math.max(12,Math.round(size*.08));
+      for(let h=1;h<=12;h++){ if(h===3||h===9) continue;
+        const deg=h*30, rad=(deg-90)*Math.PI/180, x=CENTER+RADIUS_NUM*Math.cos(rad), y=CENTER+RADIUS_NUM*Math.sin(rad);
+        const el=document.createElement('div'); el.className='hour-num'; el.textContent=(h===12)?'12':String(h);
+        el.style.left=`${x}px`; el.style.top=`${y}px`; el.style.fontSize=`${fontPx}px`; watch.appendChild(el);
+      }
+    }
+
+    /* Timezones (EN) */
+    const TIMEZONE_MAP={
+      "Geneva":"Europe/Zurich","Zurich":"Europe/Zurich","Paris":"Europe/Paris","London":"Europe/London",
+      "New York":"America/New_York","Los Angeles":"America/Los_Angeles","Chicago":"America/Chicago","Mexico City":"America/Mexico_City",
+      "Buenos Aires":"America/Argentina/Buenos_Aires","São Paulo":"America/Sao_Paulo","Lima":"America/Lima","Bogota":"America/Bogota",
+      "Santiago":"America/Santiago","Toronto":"America/Toronto","Montreal":"America/Toronto","Vancouver":"America/Vancouver",
+      "Madrid":"Europe/Madrid","Barcelona":"Europe/Madrid","Lisbon":"Europe/Lisbon","Rome":"Europe/Rome","Milan":"Europe/Rome",
+      "Berlin":"Europe/Berlin","Munich":"Europe/Berlin","Frankfurt":"Europe/Berlin","Vienna":"Europe/Vienna","Prague":"Europe/Prague",
+      "Warsaw":"Europe/Warsaw","Amsterdam":"Europe/Amsterdam","Brussels":"Europe/Brussels","Copenhagen":"Europe/Copenhagen",
+      "Stockholm":"Europe/Stockholm","Oslo":"Europe/Oslo","Helsinki":"Europe/Helsinki","Dublin":"Europe/Dublin",
+      "Athens":"Europe/Athens","Istanbul":"Europe/Istanbul","Moscow":"Europe/Moscow","Cairo":"Africa/Cairo",
+      "Johannesburg":"Africa/Johannesburg","Nairobi":"Africa/Nairobi","Lagos":"Africa/Lagos","Casablanca":"Africa/Casablanca",
+      "Rabat":"Africa/Casablanca","Doha":"Asia/Qatar","Abu Dhabi":"Asia/Dubai","Dubai":"Asia/Dubai","Riyadh":"Asia/Riyadh",
+      "Tehran":"Asia/Tehran","New Delhi":"Asia/Kolkata","Mumbai":"Asia/Kolkata","Bangalore":"Asia/Kolkata","Chennai":"Asia/Kolkata",
+      "Kolkata":"Asia/Kolkata","Karachi":"Asia/Karachi","Islamabad":"Asia/Karachi","Kathmandu":"Asia/Kathmandu",
+      "Colombo":"Asia/Colombo","Bangkok":"Asia/Bangkok","Hanoi":"Asia/Bangkok","Ho Chi Minh City":"Asia/Ho_Chi_Minh",
+      "Kuala Lumpur":"Asia/Kuala_Lumpur","Singapore":"Asia/Singapore","Jakarta":"Asia/Jakarta","Manila":"Asia/Manila",
+      "Hong Kong":"Asia/Hong_Kong","Macau":"Asia/Macau","Taipei":"Asia/Taipei","Shanghai":"Asia/Shanghai","Beijing":"Asia/Shanghai",
+      "Shenzhen":"Asia/Shanghai","Guangzhou":"Asia/Shanghai","Seoul":"Asia/Seoul","Tokyo":"Asia/Tokyo","Osaka":"Asia/Tokyo",
+      "Kyoto":"Asia/Tokyo","Sydney":"Australia/Sydney","Melbourne":"Australia/Melbourne","Auckland":"Pacific/Auckland",
+      "Wellington":"Pacific/Auckland"
+    };
+
+    let currentTZ="Europe/Zurich";
+    let lastSunKey=null;
+
+    function getPartsForTZ(tz){
+      const now=new Date();
+      const t=new Intl.DateTimeFormat('en-GB',{timeZone:tz,hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).formatToParts(now);
+      const H=parseInt(t.find(p=>p.type==='hour').value,10), M=parseInt(t.find(p=>p.type==='minute').value,10), S=parseInt(t.find(p=>p.type==='second').value,10);
+      const d=new Intl.DateTimeFormat('en-GB',{timeZone:tz,year:'numeric',month:'2-digit',day:'2-digit',weekday:'short'}).formatToParts(now);
+      const Y=parseInt(d.find(p=>p.type==='year').value,10), Mo=parseInt(d.find(p=>p.type==='month').value,10), D=parseInt(d.find(p=>p.type==='day').value,10);
+      let wd=d.find(p=>p.type==='weekday').value.toLowerCase().slice(0,3);
+      return {H,M,S,Y,Mo,D,wd};
+    }
+    function isoWeekOf(y,m,d){
+      const date=new Date(Date.UTC(y,m-1,d)); const dayNum=(date.getUTCDay()+6)%7+1;
+      date.setUTCDate(date.getUTCDate()+4-dayNum); const yearStart=new Date(Date.UTC(date.getUTCFullYear(),0,1));
+      return Math.ceil((((date-yearStart)/86400000)+1)/7);
+    }
+
+    function saveTZState(city,tz){ try{ localStorage.setItem('tzState',JSON.stringify({city,tz})); }catch{} }
+    function loadTZState(){ try{ return JSON.parse(localStorage.getItem('tzState')||'null'); }catch{ return null; } }
+    function guessCityFromTimeZone(tz){ for(const[city,mapped]of Object.entries(TIMEZONE_MAP)) if(mapped===tz) return city; return null; }
+
+    function updateClockTZ(){
+      const {H,M,S}=getPartsForTZ(currentTZ); const sDeg=S*6;
+      document.getElementById('second').style.transform=`translateX(-50%) rotate(${sDeg}deg)`; lastAngles.s=sDeg;
+      document.getElementById('digital').textContent=`${String(H).padStart(2,'0')}:${String(M).padStart(2,'0')}:${String(S).padStart(2,'0')}`;
+      if(isAnimating) return;
+      const mDeg=M*6+S*0.1, hDeg=(H%12)*30+M*0.5;
+      document.getElementById('minute').style.transform=`translateX(-50%) rotate(${mDeg}deg)`;
+      document.getElementById('hour').style.transform=`translateX(-50%) rotate(${hDeg}deg)`;
+      lastAngles.m=mDeg; lastAngles.h=hDeg;
+    }
+    function updateCalendarTZ(){
+      const months=["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
+      const {Y,Mo,D,wd}=getPartsForTZ(currentTZ);
+      document.getElementById('week').textContent=wd;
+      document.getElementById('day').textContent=String(D);
+      document.getElementById('month').textContent=months[Mo-1];
+      document.getElementById('weeknum').textContent=String(isoWeekOf(Y,Mo,D));
+    }
+
+    function startFunAnimation(){
+      const DURATION=1200, EASE='cubic-bezier(.25,.9,.3,1)';
+      const LEAD_MS = 120;
+      const {H,M,S}=getPartsForTZ(currentTZ);
+      const targetMinute=M*6+S*0.1, targetHour=(H%12)*30+M*0.5;
+      const hourEl=document.getElementById('hour'), minuteEl=document.getElementById('minute');
+      hourEl.style.transition='none'; minuteEl.style.transition='none';
+      hourEl.style.transform=`translateX(-50%) rotate(${lastAngles.h}deg)`; minuteEl.style.transform=`translateX(-50%) rotate(${lastAngles.m}deg)`;
+      const deltaHcw=mod360(targetHour-lastAngles.h), endH=lastAngles.h+360+deltaHcw;
+      const deltaMccw=-mod360(lastAngles.m-targetMinute), endM=lastAngles.m-360+deltaMccw;
+      requestAnimationFrame(()=>{
+        isAnimating=true;
+        setTimeout(()=>pulseMarker(true), Math.max(0, DURATION - LEAD_MS));
+        hourEl.style.transition=`transform ${DURATION}ms ${EASE}`;
+        minuteEl.style.transition=`transform ${DURATION}ms ${EASE}`;
+        hourEl.style.transform=`translateX(-50%) rotate(${endH}deg)`;
+        minuteEl.style.transform=`translateX(-50%) rotate(${endM}deg)`;
+        setTimeout(()=>{
+          hourEl.style.transition='none'; minuteEl.style.transition='none';
+          const hFinal=mod360(targetHour), mFinal=mod360(targetMinute);
+          hourEl.style.transform=`translateX(-50%) rotate(${hFinal}deg)`; minuteEl.style.transform=`translateX(-50%) rotate(${mFinal}deg)`;
+          lastAngles.h=hFinal; lastAngles.m=mFinal; isAnimating=false;
+        }, DURATION+30);
+      });
+    }
+
+    const tzBtn=document.getElementById('tzBtn'), tzMenu=document.getElementById('tzMenu'), tzList=document.getElementById('tzList'), tzSearch=document.getElementById('tzSearch'), cityEl=document.getElementById('city');
+
+    const CITY_LIST=[
+      {name:"Geneva",cc:"CH"},{name:"Zurich",cc:"CH"},{name:"Paris",cc:"FR"},{name:"London",cc:"GB"},
+      {name:"New York",cc:"US"},{name:"Los Angeles",cc:"US"},{name:"Chicago",cc:"US"},{name:"Mexico City",cc:"MX"},
+      {name:"Buenos Aires",cc:"AR"},{name:"São Paulo",cc:"BR"},{name:"Lima",cc:"PE"},{name:"Bogota",cc:"CO"},
+      {name:"Santiago",cc:"CL"},{name:"Toronto",cc:"CA"},{name:"Montreal",cc:"CA"},{name:"Vancouver",cc:"CA"},
+      {name:"Madrid",cc:"ES"},{name:"Barcelona",cc:"ES"},{name:"Lisbon",cc:"PT"},{name:"Rome",cc:"IT"},
+      {name:"Milan",cc:"IT"},{name:"Berlin",cc:"DE"},{name:"Munich",cc:"DE"},{name:"Frankfurt",cc:"DE"},
+      {name:"Vienna",cc:"AT"},{name:"Prague",cc:"CZ"},{name:"Warsaw",cc:"PL"},{name:"Amsterdam",cc:"NL"},
+      {name:"Brussels",cc:"BE"},{name:"Copenhagen",cc:"DK"},{name:"Stockholm",cc:"SE"},{name:"Oslo",cc:"NO"},
+      {name:"Helsinki",cc:"FI"},{name:"Dublin",cc:"IE"},{name:"Athens",cc:"GR"},{name:"Istanbul",cc:"TR"},
+      {name:"Moscow",cc:"RU"},{name:"Cairo",cc:"EG"},{name:"Johannesburg",cc:"ZA"},{name:"Nairobi",cc:"KE"},
+      {name:"Lagos",cc:"NG"},{name:"Casablanca",cc:"MA"},{name:"Rabat",cc:"MA"},{name:"Doha",cc:"QA"},
+      {name:"Abu Dhabi",cc:"AE"},{name:"Dubai",cc:"AE"},{name:"Riyadh",cc:"SA"},{name:"Tehran",cc:"IR"},
+      {name:"New Delhi",cc:"IN"},{name:"Mumbai",cc:"IN"},{name:"Bangalore",cc:"IN"},{name:"Chennai",cc:"IN"},
+      {name:"Kolkata",cc:"IN"},{name:"Karachi",cc:"PK"},{name:"Islamabad",cc:"PK"},{name:"Kathmandu",cc:"NP"},
+      {name:"Colombo",cc:"LK"},{name:"Bangkok",cc:"TH"},{name:"Hanoi",cc:"VN"},{name:"Ho Chi Minh City",cc:"VN"},
+      {name:"Kuala Lumpur",cc:"MY"},{name:"Singapore",cc:"SG"},{name:"Jakarta",cc:"ID"},{name:"Manila",cc:"PH"},
+      {name:"Hong Kong",cc:"HK"},{name:"Macau",cc:"MO"},{name:"Taipei",cc:"TW"},{name:"Shanghai",cc:"CN"},
+      {name:"Beijing",cc:"CN"},{name:"Shenzhen",cc:"CN"},{name:"Guangzhou",cc:"CN"},{name:"Seoul",cc:"KR"},
+      {name:"Tokyo",cc:"JP"},{name:"Osaka",cc:"JP"},{name:"Kyoto",cc:"JP"},{name:"Sydney",cc:"AU"},
+      {name:"Melbourne",cc:"AU"},{name:"Auckland",cc:"NZ"},{name:"Wellington",cc:"NZ"}
+    ];
+    const SORTED=CITY_LIST.slice().sort((a,b)=>a.name.localeCompare(b.name,'en',{sensitivity:'base'}));
+
+    // Drapeaux globaux
+    window.__skipNextCityMutation = false;  // ignorer l'observer pendant l'anim
+    window.__isAnimatingMarker = false;    // couper le clignotement pendant l'anim
+
+    function populateTzList(filterText=""){
+      tzList.innerHTML=""; const f=filterText.trim().toLowerCase();
+      const filtered=SORTED.filter(({name})=>name.toLowerCase().includes(f));
+      filtered.forEach(({name,cc})=>{
+        const li=document.createElement('div'); li.className='tz-item'; li.setAttribute('role','option'); li.setAttribute('tabindex','0');
+        const label=document.createElement('span'); label.textContent=name;
+        const ccSpan=document.createElement('span'); ccSpan.className='tz-cc'; ccSpan.textContent=`(${cc})`;
+        li.appendChild(label); li.appendChild(ccSpan);
+        li.addEventListener('click', ()=>{
+          window.__skipNextCityMutation = true;
+          cityEl.textContent=name; currentTZ=TIMEZONE_MAP[name]||"Europe/Paris"; saveTZState(name,currentTZ);
+          updateCalendarTZ(); updateClockTZ();
+          if(window.resetDiff) window.resetDiff();
+
+          tzMenu.classList.remove('show'); tzBtn.setAttribute('aria-expanded','false');
+          isAnimating=true; queueFunAnimation(500);
+          if (window.animateMarkerTo) setTimeout(()=>window.animateMarkerTo(name, 1200), 500);
+        });
+        li.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); li.click(); } });
+        tzList.appendChild(li);
+      });
+      const items=[...tzList.querySelectorAll('.tz-item')];
+      for(const it of items){ if(it.firstChild && TIMEZONE_MAP[it.firstChild.textContent]===currentTZ){ it.classList.add('active'); break; } }
+    }
+    function attachSearchHandler(){ if(!tzSearch) return; tzSearch.value=""; tzSearch.addEventListener('input',()=>populateTzList(tzSearch.value)); setTimeout(()=>tzSearch.focus(),0); }
+    function toggleTzMenu(){ const isOpen=tzMenu.classList.toggle('show'); tzBtn.setAttribute('aria-expanded',String(isOpen)); if(isOpen){ populateTzList(); attachSearchHandler(); } }
+    document.getElementById('tzBtn').addEventListener('click',e=>{ e.stopPropagation(); toggleTzMenu(); });
+    document.addEventListener('click',e=>{ if(tzMenu.classList.contains('show')){ const inside=tzMenu.contains(e.target)||tzBtn.contains(e.target);
+      if(!inside){ tzMenu.classList.remove('show'); tzBtn.setAttribute('aria-expanded','false'); } }});
+    document.addEventListener('keydown',e=>{
+      if(!tzMenu.classList.contains('show')) return; const items=[...tzList.querySelectorAll('.tz-item')]; if(!items.length) return;
+      const active=document.activeElement; let idx=items.indexOf(active);
+      if(e.key==='ArrowDown'){ e.preventDefault(); (items[Math.min(idx+1,items.length-1)]||items[0]).focus(); }
+      else if(e.key==='ArrowUp'){ e.preventDefault(); (items[Math.max(idx-1,0)]||items[0]).focus(); }
+    });
+
+    /* ===== Time difference feature ===== */
+    const diffBtn = document.getElementById('diffBtn');
+    const diffMenu = document.getElementById('diffMenu');
+    const diffList = document.getElementById('diffList');
+    const diffSearch = document.getElementById('diffSearch');
+    const diffOutput = document.getElementById('diffOutput');
+
+    let diffSelection = null; // { name, tz }
+
+    function getTZOffsetMinutes(tz){
+      const now = new Date();
+      const tzDate = new Date(now.toLocaleString('en-US', { timeZone: tz }));
+      const utcDate = new Date(now.toLocaleString('en-US', { timeZone: 'UTC' }));
+      return Math.round((tzDate - utcDate) / 60000);
+    }
+    function formatOffset(mins){
+      const sign = mins >= 0 ? '+' : '-';
+      const a = Math.abs(mins);
+      const h = Math.floor(a/60);
+      const m = a % 60;
+      return m===0 ? `${sign}${h}` : `${sign}${h}:${String(m).padStart(2,'0')}`;
+    }
+    function computeDiffLabel(targetTZ){
+      const cur = getTZOffsetMinutes(currentTZ);
+      const tgt = getTZOffsetMinutes(targetTZ);
+      return formatOffset(tgt - cur);
+    }
+
+    function populateDiffList(filterText=""){
+      diffList.innerHTML=""; const f=filterText.trim().toLowerCase();
+      const filtered=SORTED.filter(({name})=>name.toLowerCase().includes(f));
+      filtered.forEach(({name,cc})=>{
+        const li=document.createElement('div'); li.className='diff-item'; li.setAttribute('role','option'); li.setAttribute('tabindex','0');
+        const label=document.createElement('span'); label.textContent=name;
+        const ccSpan=document.createElement('span'); ccSpan.className='diff-cc'; ccSpan.textContent=`(${cc})`;
+        li.appendChild(label); li.appendChild(ccSpan);
+        li.addEventListener('click', ()=>{
+          const tz = TIMEZONE_MAP[name] || "Europe/Paris";
+          diffSelection = { name, tz };
+          diffMenu.classList.remove('show');
+          diffBtn.style.display='none';
+          diffOutput.textContent = ` ${name}: ${computeDiffLabel(tz)}`;
+          diffBtn.setAttribute('aria-expanded','false');
+          if (window.updateCompare) window.updateCompare(name);
+        });
+        li.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); li.click(); } });
+        diffList.appendChild(li);
+      });
+    }
+    function attachDiffSearch(){ if(!diffSearch) return; diffSearch.value=""; diffSearch.addEventListener('input',()=>populateDiffList(diffSearch.value)); setTimeout(()=>diffSearch.focus(),0); }
+    function toggleDiffMenu(){ const isOpen=diffMenu.classList.toggle('show'); diffBtn.setAttribute('aria-expanded',String(isOpen)); if(isOpen){ populateDiffList(); attachDiffSearch(); } }
+
+    diffBtn.addEventListener('click', (e)=>{ e.stopPropagation(); toggleDiffMenu(); });
+    document.addEventListener('click', (e)=>{ if(diffMenu.classList.contains('show')){ const inside = diffMenu.contains(e.target) || diffBtn.contains(e.target); if(!inside){ diffMenu.classList.remove('show'); diffBtn.setAttribute('aria-expanded','false'); } } });
+
+    function resetDiff(){
+      diffSelection = null;
+      diffOutput.textContent = '';
+      diffBtn.style.display = 'inline-block';
+      diffMenu.classList.remove('show');
+      diffBtn.setAttribute('aria-expanded','false');
+      if (window.updateCompare) window.updateCompare(null);
+    }
+    window.resetDiff = resetDiff;
+
+    // Recalculer l'écart périodiquement (DST)
+    setInterval(()=>{
+      if(diffSelection){
+        diffOutput.textContent = ` ${diffSelection.name}: ${computeDiffLabel(diffSelection.tz)}`;
+      }
+    }, 60*1000);
+
+    /* Global tick */
+    function tick(){
+      updateClockTZ();
+      updateCalendarTZ();
+
+      const { Y, Mo, D, S } = getPartsForTZ(currentTZ);
+      const key = `${Y}-${Mo}-${D}`;
+      if (key !== lastSunKey) {
+        lastSunKey = key;
+        if (window.updateSunTimes) window.updateSunTimes(document.getElementById('city').textContent.trim());
+      }
+
+      if (prevSecond === null){ prevSecond = S; pulseMarker();
+      } else if (S !== prevSecond){ prevSecond = S; pulseMarker(); }
+      scheduleNextTick();
+    }
+    function scheduleNextTick(){ const delay = 1000 - (Date.now() % 1000) + 2; setTimeout(tick, delay); }
+
+    (function initTZ(){
+      const saved=loadTZState();
+      if(saved && saved.tz){
+        currentTZ=saved.tz;
+        const enCity = guessCityFromTimeZone(saved.tz) || saved.city || 'Geneva';
+        document.getElementById('city').textContent = enCity;
+        saveTZState(enCity, currentTZ);
+      } else {
+        const guessed=Intl.DateTimeFormat().resolvedOptions().timeZone; const city=guessCityFromTimeZone(guessed);
+        if(city){ document.getElementById('city').textContent=city; currentTZ=TIMEZONE_MAP[city]; saveTZState(city,currentTZ); }
+        else { document.getElementById('city').textContent='Geneva'; currentTZ='Europe/Zurich'; saveTZState('Geneva',currentTZ); }
+      }
+    })();
+
+    window.addEventListener('resize',layoutWatch);
+    layoutWatch();
+    tick();
+  </script>
+
+  <!-- D3 + TopoJSON -->
+  <script src="https://unpkg.com/d3@7"></script>
+  <script src="https://unpkg.com/topojson-client@3"></script>
+  <script>
+    (async function(){
+      const svg=d3.select("#map"); if(svg.empty()) return;
+      const width=1200, height=600;
+
+      const projection=d3.geoEquirectangular().rotate([-10,0]).fitExtent([[0,0],[width,height]],{type:"Sphere"});
+      const path=d3.geoPath(projection), graticule=d3.geoGraticule10(), g=svg.append("g");
+
+      /* ===== defs: masks ===== */
+      const defs = svg.append("defs");
+      const nightMask = defs.append("mask").attr("id","nightMask");
+      nightMask.append("rect").attr("width", width).attr("height", height).attr("fill", "black");
+      const nightMaskPath = nightMask.append("path").attr("id","nightMaskPath").attr("fill","white");
+      const dayMask = defs.append("mask").attr("id","dayMask");
+      dayMask.append("rect").attr("width", width).attr("height", height).attr("fill", "white");
+      const dayMaskBlock = dayMask.append("path").attr("id","dayMaskBlock").attr("fill","black");
+
+      function drawFallback(){
+        g.selectAll("*").remove();
+        g.append("path").attr("class","sphere").attr("d",path({type:"Sphere"}));
+        g.append("path").attr("class","graticule").attr("d",path(graticule));
+        placeInitialMarker();
+      }
+
+      let landGeom=null, bordersMesh=null;
+
+      try{
+        g.append("path").attr("class","sphere").attr("d",path({type:"Sphere"}));
+        g.append("path").attr("class","graticule").attr("d",path(graticule));
+
+        const world=await fetch("https://unpkg.com/world-atlas@2/countries-50m.json").then(r=>r.json());
+        const countries=topojson.feature(world, world.objects.countries);
+        const borders=topojson.mesh(world, world.objects.countries, (a,b)=>a!==b);
+        const land = topojson.feature(world, world.objects.land);
+
+        landGeom = land;
+        bordersMesh = borders;
+
+        g.selectAll("path.land").data(countries.features).join("path").attr("class","land").attr("d",path);
+        g.append("path").attr("class","boundary").attr("d",path(borders));
+      } catch(e){
+        console.warn("world-atlas fetch failed, using fallback:", e);
+        drawFallback();
+      }
+
+      /* === Night overlay & night-only strokes === */
+      const nightPath = g.append("path").attr("class","night");
+      const coastNight = g.append("path").attr("class","night-only").attr("mask","url(#nightMask)");
+      const bordersNight = g.append("path").attr("class","night-only").attr("mask","url(#nightMask)");
+
+      if (landGeom) coastNight.attr("d", path(landGeom));
+      if (bordersMesh) bordersNight.attr("d", path(bordersMesh));
+
+      /* === City coords + marker === */
+      const CITY_COORDS={
+        "Geneva":[6.15,46.2],"Zurich":[8.55,47.37],"Paris":[2.3522,48.8566],"London":[-0.1276,51.5072],
+        "New York":[-74.0060,40.7128],"Los Angeles":[-118.2437,34.0522],"Chicago":[-87.6298,41.8781],"Mexico City":[-99.1332,19.4326],
+        "Buenos Aires":[-58.3816,-34.6037],"São Paulo":[-46.6333,-23.5505],"Lima":[-77.0428,-12.0464],"Bogota":[-74.0721,4.7110],
+        "Santiago":[-70.6693,-33.4489],"Toronto":[-79.3832,43.6532],"Montreal":[-73.5673,45.5017],"Vancouver":[-123.1207,49.2827],
+        "Madrid":[-3.7038,40.4168],"Barcelona":[2.1734,41.3851],"Lisbon":[-9.1393,38.7223],"Rome":[12.4964,41.9028],
+        "Milan":[9.19,45.4642],"Berlin":[13.405,52.52],"Munich":[11.582,48.1351],"Frankfurt":[8.6821,50.1109],
+        "Vienna":[16.3738,48.2082],"Prague":[14.4378,50.0755],"Warsaw":[21.0122,52.2297],"Amsterdam":[4.9041,52.3676],
+        "Brussels":[4.3517,50.8503],"Copenhagen":[12.5683,55.6761],"Stockholm":[18.0686,59.3293],"Oslo":[10.7522,59.9139],
+        "Helsinki":[24.9384,60.1699],"Dublin":[-6.2603,53.3498],"Athens":[23.7275,37.9838],"Istanbul":[28.9784,41.0082],
+        "Moscow":[37.6173,55.7558],"Cairo":[31.2357,30.0444],"Johannesburg":[28.0473,-26.2041],"Nairobi":[36.8219,-1.2921],
+        "Lagos":[3.3792,6.5244],"Casablanca":[-7.5898,33.5731],"Rabat":[-6.8326,34.0209],"Doha":[51.531,25.2854],
+        "Abu Dhabi":[54.3773,24.4539],"Dubai":[55.2708,25.2048],"Riyadh":[46.6753,24.7136],"Tehran":[51.389,35.6892],
+        "New Delhi":[77.1025,28.7041],"Mumbai":[72.8777,19.076],"Bangalore":[77.5946,12.9716],"Chennai":[80.2707,13.0827],
+        "Kolkata":[88.3639,22.5726],"Karachi":[67.0099,24.8615],"Islamabad":[73.0479,33.6844],"Kathmandu":[85.324,27.7172],
+        "Colombo":[79.8612,6.9271],"Bangkok":[100.5018,13.7563],"Hanoi":[105.8342,21.0278],"Ho Chi Minh City":[106.6297,10.8231],
+        "Kuala Lumpur":[101.6869,3.139],"Singapore":[103.8198,1.3521],"Jakarta":[106.8456,-6.2088],"Manila":[120.9842,14.5995],
+        "Hong Kong":[114.1694,22.3193],"Macau":[113.5439,22.1987],"Taipei":[121.5654,25.033],
+        "Shanghai":[121.4737,31.2304],"Beijing":[116.4074,39.9042],"Shenzhen":[114.0579,22.5431],"Guangzhou":[113.2644,23.1291],
+        "Seoul":[126.978,37.5665],"Tokyo":[139.6917,35.6895],"Osaka":[135.5023,34.6937],"Kyoto":[135.7681,35.0116],
+        "Sydney":[151.2093,-33.8688],"Melbourne":[144.9631,-37.8136],"Auckland":[174.7633,-36.8485],"Wellington":[174.7772,-41.2866]
+      };
+
+      let currentCityLL=null;
+
+      /* ====== Sun calc ====== */
+      const dayMs=86400000, rad=Math.PI/180, J1970=2440588, J2000=2451545, e=rad*23.4397, J0=0.0009;
+      const toJulian=d=>d/ dayMs - 0.5 + J1970;
+      const fromJulian=j=>new Date((j + 0.5 - J1970)*dayMs);
+      const toDays=date=>toJulian(date.getTime()) - J2000;
+      const solarMeanAnomaly=d=>rad*(357.5291+0.98560028*d);
+      const eclipticLongitude=M=>{
+        const C=rad*(1.9148*Math.sin(M)+0.02*Math.sin(2*M)+0.0003*Math.sin(3*M));
+        const P=rad*102.9372;
+        return M+C+P+Math.PI;
+      };
+      const declination=(L,b=0)=>Math.asin(Math.sin(b)*Math.cos(e)+Math.cos(b)*Math.sin(e)*Math.sin(L));
+      const rightAscension=(L,b=0)=>Math.atan2(Math.sin(L)*Math.cos(e)-Math.tan(b)*Math.sin(e), Math.cos(L));
+      const hourAngle=(h,phi,d)=>Math.acos((Math.sin(h)-Math.sin(phi)*Math.sin(d))/(Math.cos(phi)*Math.cos(d)));
+      const approxTransit=(Ht,lw,n)=>J0+(Ht+lw)/(2*Math.PI)+n;
+      const solarTransitJ=(ds,M,L)=>J2000+ds+0.0053*Math.sin(M)-0.0069*Math.sin(2*L);
+
+      function getSunTimes(dateUTC, lat, lon){
+        const lw = -lon*rad, phi = lat*rad;
+        const d = toDays(dateUTC);
+        const n = Math.round(d - J0 - lw/(2*Math.PI));
+        const ds = approxTransit(0, lw, n);
+        const M = solarMeanAnomaly(ds);
+        const L = eclipticLongitude(M);
+        const dec = declination(L, 0);
+        const Jnoon = solarTransitJ(ds, M, L);
+        const h0 = (-0.833) * rad;
+        const w0 = hourAngle(h0, phi, dec);
+        if (isNaN(w0)) return { sunrise:null, solarNoon:fromJulian(Jnoon), sunset:null };
+        const Jrise = solarTransitJ(approxTransit(-w0, lw, n), M, L);
+        const Jset  = solarTransitJ(approxTransit( w0, lw, n), M, L);
+        return { sunrise: fromJulian(Jrise), solarNoon: fromJulian(Jnoon), sunset: fromJulian(Jset) };
+      }
+
+      const sunriseEl = document.getElementById('sunrise');
+      const solarNoonEl = document.getElementById('solarNoon');
+      const sunsetEl = document.getElementById('sunset');
+
+      function updateSunTimes(cityName){
+        const ll=CITY_COORDS[cityName]; if(!ll) return;
+        const [lon,lat]=ll;
+        const {Y,Mo,D}= (window.getPartsForTZ? window.getPartsForTZ(currentTZ) : (function(){const n=new Date();return {Y:n.getUTCFullYear(),Mo:n.getUTCMonth()+1,D:n.getUTCDate()};})());
+        const baseUTC = new Date(Date.UTC(Y,Mo-1,D,12,0,0));
+        const t = getSunTimes(baseUTC, lat, lon);
+        const fmt = d => d ? d.toLocaleTimeString('en-GB',{timeZone: currentTZ, hour:'2-digit', minute:'2-digit'}) : '—';
+        sunriseEl.textContent = fmt(t.sunrise);
+        solarNoonEl.textContent = fmt(t.solarNoon);
+        sunsetEl.textContent  = fmt(t.sunset);
+      }
+      window.updateSunTimes = updateSunTimes;
+
+      const marker = g.append("circle").attr("class","city-marker").attr("r",6).attr("opacity",1);
+
+      function updateCityMarker(cityName){
+        const ll=CITY_COORDS[cityName]; if(!ll) return;
+        currentCityLL = ll;
+        const [x,y]=projection(ll);
+        marker.attr("cx",x).attr("cy",y);
+        marker.attr("opacity",1);
+
+        if (!window.__isAnimatingMarker) {
+          setTimeout(()=>{ if(window.pulseMarker) window.pulseMarker(true); }, 20);
+        }
+      }
+      window.updateCityMarker = updateCityMarker;
+
+      /* === Day/Night helpers for coloring marker === */
+      const toRad = Math.PI/180;
+      const ALT_CORR_DEG = 0.833;
+      const ALT_CORR_RAD = ALT_CORR_DEG * toRad;
+
+      function subsolar(date){
+        const d = toDays(date);
+        const M = solarMeanAnomaly(d);
+        const L = eclipticLongitude(M);
+        const dec = declination(L, 0);
+        const ra  = rightAscension(L, 0);
+
+        const JD = toJulian(date.getTime());
+        const T = (JD - 2451545.0) / 36525.0;
+        let GMST = 280.46061837 + 360.98564736629*(JD-2451545.0) + 0.000387933*T*T - T*T*T/38710000.0;
+        GMST = ((GMST%360)+360)%360 * Math.PI/180;
+
+        let lon = (ra - GMST);
+        lon = ((lon + Math.PI*3)%(2*Math.PI)) - Math.PI;
+        const lat = dec;
+        return { lon: lon*180/Math.PI, lat: lat*180/Math.PI };
+      }
+
+      function isNightAt(lonLat, sub){
+        const dist = d3.geoDistance(lonLat, [sub.lon, sub.lat]);
+        return dist > (Math.PI/2 + ALT_CORR_RAD);
+      }
+
+      function updateMarkerColor(sub){
+        if (!currentCityLL) return;
+        const night = isNightAt(currentCityLL, sub);
+        marker.attr("fill", night ? "yellow" : "red").attr("opacity", 1);
+      }
+
+      // Animation du marqueur (indépendante de la croix)
+      window.animateMarkerTo = function(cityName, duration = 1200){
+        const target = CITY_COORDS[cityName];
+        if (!target) return;
+
+        if (!currentCityLL){
+          updateCityMarker(cityName);
+          if (window.updateSunTimes) window.updateSunTimes(cityName);
+          const subNow = subsolar(new Date());
+          updateMarkerColor(subNow);
+          return;
+        }
+
+        window.__isAnimatingMarker = true;
+        const _cityDot = document.querySelector('.city-marker');
+        if (_cityDot) _cityDot.classList.remove('pulse');
+
+        const interp = d3.geoInterpolate(currentCityLL, target);
+        const t0 = performance.now();
+
+        function step(now){
+          const u = Math.min(1, (now - t0) / duration);
+          const ll = interp(u);
+          const [x, y] = projection(ll);
+          marker.attr("cx", x).attr("cy", y).attr("opacity", 1);
+          const sub = subsolar(new Date());
+          const night = isNightAt(ll, sub);
+          marker.attr("fill", night ? "yellow" : "red");
+
+          if (u < 1){ requestAnimationFrame(step); }
+          else{
+            window.__isAnimatingMarker = false;
+            currentCityLL = target.slice();
+            if (window.updateSunTimes) window.updateSunTimes(cityName);
+            if (window.pulseMarker) window.pulseMarker(true);
+          }
+        }
+        requestAnimationFrame(step);
+      };
+
+      function placeInitialMarker(){
+        const currentCity=document.getElementById('city').textContent.trim();
+        updateCityMarker(currentCity);
+        updateSunTimes(currentCity);
+        const sub0 = subsolar(new Date());
+        updateMarkerColor(sub0);
+      }
+      placeInitialMarker();
+
+      /* === Compare graphics (marker + split colored geodesic) === */
+      const cmpMarker = g.append("circle").attr("class","compare-marker").attr("r",6).attr("opacity",0);
+      const lineDay   = g.append("path").attr("class","compare-line").attr("stroke","red").attr("stroke-width",3).attr("mask","url(#dayMask)");
+      const lineNight = g.append("path").attr("class","compare-line").attr("stroke","yellow").attr("stroke-width",3).attr("mask","url(#nightMask)");
+      let compareCityLL = null;
+
+      function updateCompareGraphics(){
+        if(!currentCityLL || !compareCityLL){
+          cmpMarker.attr("opacity",0);
+          lineDay.attr("d", null); lineNight.attr("d", null);
+          return;
+        }
+        const [x2,y2] = projection(compareCityLL);
+        cmpMarker.attr("cx",x2).attr("cy",y2).attr("opacity",1);
+
+        const sub = subsolar(new Date());
+        const isNightCmp = isNightAt(compareCityLL, sub);
+        cmpMarker.attr("fill", isNightCmp ? "yellow" : "red");
+
+        const interp = d3.geoInterpolate(currentCityLL, compareCityLL);
+        const coords = d3.range(0, 1.0001, 0.02).map(t => interp(t));
+        const lineGeo = { type:"LineString", coordinates: coords };
+        lineDay.attr("d", path(lineGeo));
+        lineNight.attr("d", path(lineGeo));
+      }
+
+      // API appelée par “time difference”
+      window.updateCompare = function(cityName){
+        if (!cityName){ compareCityLL = null; updateCompareGraphics(); return; }
+        const ll = CITY_COORDS[cityName];
+        compareCityLL = ll ? ll.slice() : null;
+        updateCompareGraphics();
+      };
+
+      /* === CROIX SVG EN BAS GAUCHE — couleurs par pixel via masques jour/nuit (pilotée par :root) === */
+      const crossDay   = g.append('g').attr('class','close-cross-day').attr('mask','url(#dayMask)').style('pointer-events','none');
+      const crossNight = g.append('g').attr('class','close-cross-night').attr('mask','url(#nightMask)').style('pointer-events','none');
+
+      function drawCloseCross(){
+        const svgNode = document.getElementById('map');
+        const rect = svgNode.getBoundingClientRect();
+        if (rect.width === 0 || rect.height === 0) return; // carte masquée
+
+        // Lecture des variables CSS
+        const rootStyle = getComputedStyle(document.documentElement);
+        const offX = parseFloat(rootStyle.getPropertyValue('--close-offset-x')) || 5;
+        const offY = parseFloat(rootStyle.getPropertyValue('--close-offset-y')) || 15;
+        const sizePx   = parseFloat(rootStyle.getPropertyValue('--close-size'))   || 28; // px
+        const strokePx = parseFloat(rootStyle.getPropertyValue('--close-stroke')) || 5;  // px
+        const colorDay   = (rootStyle.getPropertyValue('--close-color-day')   || 'red').trim();
+        const colorNight = (rootStyle.getPropertyValue('--close-color-night') || 'yellow').trim();
+
+        // Échelle viewBox → pixels
+        const scaleX = rect.width / width;
+        const scaleY = rect.height / height;
+        const scale = Math.min(scaleX, scaleY);
+
+        // Centre en pixels écran (dans l'espace affiché)
+        const cx_px = offX + sizePx/2;
+        const cy_px = rect.height - offY - sizePx/2;
+
+        // Conversion en coord. viewBox
+        const cx = cx_px / scale;
+        const cy = cy_px / scale;
+        const half = (sizePx/2) / scale;
+        const sw = strokePx / scale;
+
+        // Clear + redraw
+        crossDay.selectAll('*').remove();
+        crossNight.selectAll('*').remove();
+
+        const lines = [
+          { x1: cx - half, y1: cy - half, x2: cx + half, y2: cy + half },
+          { x1: cx - half, y1: cy + half, x2: cx + half, y2: cy - half }
+        ];
+
+        lines.forEach(l=>{
+          crossDay.append('line')
+            .attr('x1', l.x1).attr('y1', l.y1).attr('x2', l.x2).attr('y2', l.y2)
+            .attr('stroke', colorDay).attr('stroke-width', sw).attr('stroke-linecap','round');
+          crossNight.append('line')
+            .attr('x1', l.x1).attr('y1', l.y1).attr('x2', l.x2).attr('y2', l.y2)
+            .attr('stroke', colorNight).attr('stroke-width', sw).attr('stroke-linecap','round');
+        });
+      }
+
+      /* === Terminateur (masques) + MAJ couleurs dynamiques === */
+      function updateTerminator(){
+        const sub = subsolar(new Date());
+        const center = [sub.lon + 180, -sub.lat]; // antipode => zone nuit
+        const nightCircle = d3.geoCircle().center(center).radius(90 - ALT_CORR_DEG)();
+
+        nightMaskPath.attr("d", path(nightCircle));
+        dayMaskBlock.attr("d", path(nightCircle));
+        nightPath.attr("d", path(nightCircle));
+
+        updateMarkerColor(sub);
+        updateCompareGraphics();
+        drawCloseCross();  // recalcule la position/épaisseur si redimensionné ou si variables CSS changent
+      }
+
+      updateTerminator();
+      setInterval(updateTerminator, 60*1000);
+
+      // Recalcule quand la ville du haut change — on ignore le prochain changement si on vient de cliquer
+      const observer = new MutationObserver(()=> {
+        if (window.__skipNextCityMutation){
+          window.__skipNextCityMutation = false;
+          return;
+        }
+        const city = document.getElementById('city').textContent.trim();
+        updateCityMarker(city);
+        updateCompareGraphics();
+        const sub = subsolar(new Date());
+        updateMarkerColor(sub);
+      });
+      observer.observe(document.getElementById('city'), { childList:true, characterData:true, subtree:true });
+
+      // Repositionne/redessine la croix au resize (et tient compte des variables CSS)
+      window.addEventListener('resize', drawCloseCross);
+
+      // Dessin initial (si la carte est visible)
+      drawCloseCross();
+    })();
+  </script>
+
+  <script>
+    if("serviceWorker" in navigator){ navigator.serviceWorker.register("/sw.js"); }
+  </script>
+
+  <script>
+    // Reset: remet le bouton "time difference"
+    document.getElementById('resetBtn').addEventListener('click', ()=>{
+      if (window.resetDiff) window.resetDiff();
+    });
+  </script>
+
+  <!-- Ouvrir / fermer la carte + gestion de la croix -->
+  <script>
+    (function () {
+      var btn = document.getElementById('showMapBtn');
+      var area = document.getElementById('mapArea');
+      var closeBtn = document.getElementById('closeMapBtn');
+      if (!btn || !area) return;
+
+      function onOpen(){
+        btn.style.display = 'none';
+        area.style.display = 'block';
+        if (closeBtn) closeBtn.style.display = 'block';
+        // recalcul de la croix (dimensions réelles connues une fois visible)
+        if (window.requestAnimationFrame){
+          requestAnimationFrame(()=>{ try { const ev = new Event('resize'); window.dispatchEvent(ev); } catch(e){} });
+        } else {
+          try { const ev = new Event('resize'); window.dispatchEvent(ev); } catch(e){}
+        }
+      }
+
+      btn.addEventListener('click', onOpen);
+
+      if (closeBtn){
+        closeBtn.addEventListener('click', function(){
+          area.style.display = 'none';
+          btn.style.display = 'block';
+          closeBtn.style.display = 'none';
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

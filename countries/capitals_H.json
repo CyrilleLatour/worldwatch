@@ -1,0 +1,29 @@
+{
+  "Haiti": [
+    {
+      "cc": "HT",
+      "lat": 18.5392,
+      "lon": -72.335,
+      "name": "Port-au-Prince",
+      "tz": "America/Port-au-Prince"
+    }
+  ],
+  "Honduras": [
+    {
+      "cc": "HN",
+      "lat": 14.0818,
+      "lon": -87.2068,
+      "name": "Tegucigalpa",
+      "tz": "America/Tegucigalpa"
+    }
+  ],
+  "Hungary": [
+    {
+      "cc": "HU",
+      "lat": 47.4979,
+      "lon": 19.0402,
+      "name": "Budapest",
+      "tz": "Europe/Budapest"
+    }
+  ]
+}

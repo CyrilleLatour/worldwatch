@@ -1,0 +1,92 @@
+{
+  "Pakistan": [
+    {
+      "cc": "PK",
+      "lat": 33.6844,
+      "lon": 73.0479,
+      "name": "Islamabad",
+      "tz": "Asia/Karachi"
+    }
+  ],
+  "Palau": [
+    {
+      "cc": "PW",
+      "lat": 7.5006,
+      "lon": 134.6242,
+      "name": "Ngerulmud",
+      "tz": "Pacific/Palau"
+    }
+  ],
+  "Palestine": [
+    {
+      "cc": "PS",
+      "lat": 31.7767,
+      "lon": 35.2342,
+      "name": "Jerusalem (East)",
+      "tz": "Asia/Hebron"
+    }
+  ],
+  "Panama": [
+    {
+      "cc": "PA",
+      "lat": 8.9833,
+      "lon": -79.5167,
+      "name": "Panama City",
+      "tz": "America/Panama"
+    }
+  ],
+  "Papua New Guinea": [
+    {
+      "cc": "PG",
+      "lat": -9.478,
+      "lon": 147.1494,
+      "name": "Port Moresby",
+      "tz": "Pacific/Port_Moresby"
+    }
+  ],
+  "Paraguay": [
+    {
+      "cc": "PY",
+      "lat": -25.3,
+      "lon": -57.6333,
+      "name": "Asunción",
+      "tz": "America/Asuncion"
+    }
+  ],
+  "Peru": [
+    {
+      "cc": "PE",
+      "lat": -12.06,
+      "lon": -77.0375,
+      "name": "Lima",
+      "tz": "America/Lima"
+    }
+  ],
+  "Philippines": [
+    {
+      "cc": "PH",
+      "lat": 14.5958,
+      "lon": 120.9772,
+      "name": "Manila",
+      "tz": "Asia/Manila"
+    }
+  ],
+  "Poland": [
+    {
+      "cc": "PL",
+      "lat": 52.2298,
+      "lon": 21.0118,
+      "name": "Warsaw",
+      "tz": "Europe/Warsaw"
+    }
+  ],
+  "Portugal": [
+    {
+      "cc": "PT",
+      "lat": 38.7169,
+      "lon": -9.139,
+      "name": "Lisbon",
+      "tz": "Europe/Lisbon"
+    }
+  ]
+}

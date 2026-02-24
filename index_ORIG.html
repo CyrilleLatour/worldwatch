@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Montre Analogique – Mobile Frame</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap" rel="stylesheet">
+  <style>
+    /* ===== Page ===== */
+    html, body {
+      height: 100%;
+      margin: 0;
+      background: #e9ecef;
+      display: grid;
+      place-items: center;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    /* ===== Cadre smartphone (ratio ~ 9:19.5) ===== */
+    .phone {
+      position: relative;
+      width: min(390px, 92vw);
+      aspect-ratio: 9 / 19.5;
+      background: #f8f9fa;
+      border: 12px solid #111;
+      border-radius: 34px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.25), inset 0 0 0 1px rgba(255,255,255,0.06);
+      overflow: hidden;
+    }
+
+    /* Zone contenu avec marges internes sûres */
+    .screen {
+      position: absolute;
+      inset: 20px 14px 20px; /* top right bottom left */
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      align-items: start;
+    }
+
+    /* ===== En-tête: ville centrée + bouton TZ en haut-droite ===== */
+    .header {
+      position: relative;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .city-name {
+      font-weight: 700;
+      font-size: 30px;
+      color: blue;
+      pointer-events: none;
+    }
+    .tz-button {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 12px;
+      padding: 8px 10px;
+      border: 1px solid #000;
+      background: #fff;
+      color: #000;
+      border-radius: 8px;
+      cursor: pointer;
+      user-select: none;
+      z-index: 20;
+    }
+
+    .tz-button:active { transform: translateY(-50%) scale(0.98); }
+
+    .tz-button:hover {
+      background: red;
+      border: 1px solid red;
+      color: white;
+    }
+
+    /* ===== Menu fuseau horaire (liste déroulante) ===== */
+    .tz-menu {
+      position: absolute;
+      right: 0;
+      top: 44px;
+      width: 240px;
+      background: #fff;
+      border: 1px solid #000;
+      border-radius: 8px;
+      box-shadow: 0 8px 24px rgba(0,0,0,.15);
+      z-index: 1000;
+      overflow: hidden;
+      display: none;
+    }
+    .tz-menu.show { display: block; }
+
+    .tz-menu-header {
+      padding: 8px 10px;
+      font-size: 12px;
+      font-weight: 600;
+      background: #f1f1f1;
+      border-bottom: 1px solid #000;
+    }
+
+    .tz-menu-list {
+      max-height: 320px;        /* 10 lignes * 32px */
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+    }
+
+    .tz-item {
+      height: 32px;
+      line-height: 32px;
+      padding: 0 10px;
+      font-size: 13px;
+      cursor: pointer;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .tz-item:hover,
+    .tz-item:focus {
+      background: #e9f2ff;
+      outline: none;
+    }
+    .tz-cc {
+      font-size: 12px;
+      color: #333;
+      opacity: .85;
+      flex: 0 0 auto;
+    }
+
+    /* ===== Conteneur central pour la montre ===== */
+    .center-pane {
+      display: grid;
+      place-items: center;
+      padding: 6px 0;
+    }
+
+    /* ===== Montre (taille contrôlée en JS) ===== */
+    .watch {
+      position: relative;
+      width: 300px;              /* valeur par défaut (JS adaptera) */
+      height: 300px;
+      border: 8px solid #000;
+      border-radius: 50%;
+      background: #fff;
+      overflow: hidden;
+    }
+
+    /* Aiguilles (pivot au centre exact) */
+    .hand {
+      position: absolute;
+      bottom: 50%;
+      left: 50%;
+      transform: translateX(-50%) rotate(0deg);
+      transform-origin: bottom center;
+      background: #000;
+    }
+    .hand.hour   { width: 6px;  height: 70px;  z-index: 10; }
+    .hand.minute { width: 4px;  height: 100px; z-index: 9; }
+    .hand.second { width: 2px;  height: 120px; z-index: 8; background: #e00; }
+
+    .center-dot {
+      position: absolute;
+      width: 14px; height: 14px;
+      background: #000; border-radius: 50%;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 20;
+    }
+
+    /* Gros points (heures) — 10px */
+    .dot {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: #000;
+      border-radius: 50%;
+    }
+
+    /* Petits points (minutes) — 5px */
+    .min-dot {
+      position: absolute;
+      width: 5px;
+      height: 5px;
+      background: #000;
+      border-radius: 50%;
+      opacity: 0.9;
+    }
+
+    /* Wrap centré pour les traits cardinaux (base au centre) */
+    .mark-wrap {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform-origin: center center;
+    }
+    /* 4 traits identiques qui touchent le bord et rentrent de 30px */
+    .main-mark {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 6px;
+      height: 30px;
+      background: #000;
+      border-radius: 3px;
+      transform-origin: 50% 100%;
+      transform: translate(-50%, var(--edge-translate, -150px)); /* mis à jour par JS */
+    }
+
+    /* Heure numérique sous le centre */
+    .digital {
+      position: absolute;
+      left: 50%;
+      top: 58%;
+      transform: translateX(-50%);
+      font: 14px/1 Arial, sans-serif;
+      color: #111;
+      z-index: 20;
+    }
+
+    /* ===== STYLE COMMUN DES BOÎTES (sans gérer les tailles) ===== */
+    .box {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff;
+      color: #000;
+      border: 1px solid #000;
+      border-radius: 4px;
+      font: 12px/1 Arial, sans-serif;
+      white-space: nowrap;
+      z-index: 5; /* sous la trotteuse */
+      line-height: 1;
+      letter-spacing: 0;
+      text-align: center;
+    }
+
+    /* ===== Boîtes à DROITE ===== */
+    .day-box {
+      position: absolute;
+      top: 50%; left: 83.333%;
+      transform: translate(-50%, -50%);
+      width: 20px; height: 20px;   /* carré simple */
+    }
+    .week-box {
+      position: absolute;
+      top: 50%;
+      /* 20px = largeur .day-box ; 24px = largeur .week-box ; 6px = écart */
+      left: calc(83.333% - ((20px / 2) + (24px / 2) + 6px));
+      transform: translate(-50%, -50%);
+      text-transform: lowercase;
+      width: 24px; height: 20px;
+    }
+
+    /* ===== Cluster à GAUCHE : mois + “sem” + carré semaine ===== */
+    .month-cluster {
+      position: absolute;
+      top: 50%;
+      left: 25%;
+      transform: translate(-50%, -50%);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      z-index: 5;
+    }
+    .month-box { width: 35px; height: 20px; }
+    .week-label { font: 11px/1 Arial, sans-serif; color: #000; user-select: none; }
+    .weeknum-box { width: 20px; height: 20px; }
+
+    /* ===== Chiffres des heures (ajout) ===== */
+    .hour-num {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      font-family: 'Comic Neue', 'Comic Sans MS', 'Comic Sans', cursive;
+      font-weight: 700;           /* gras */
+      color: blue;                /* bleu */
+      line-height: 1;
+      user-select: none;
+      pointer-events: none;       /* ne gêne pas les clics */
+      /* taille responsive réglée en JS via fontSize */
+    }
+  </style>
+</head>
+<body>
+
+  <div class="phone" id="phone">
+    <div class="screen">
+      <div class="header">
+        <div class="city-name" id="city">Genève</div>
+        <button class="tz-button" type="button" id="tzBtn" aria-haspopup="listbox" aria-expanded="false">fuseau <br>horaire</button>
+
+        <!-- MENU DÉROULANT DES VILLES -->
+        <div class="tz-menu" id="tzMenu" role="listbox" aria-label="Choisir une ville">
+          <div class="tz-menu-header">Villes (10 visibles)</div>
+          <div class="tz-menu-list" id="tzList"></div>
+        </div>
+      </div>
+
+      <div class="center-pane">
+        <div class="watch" id="watch">
+          <!-- Aiguilles -->
+          <div class="hand hour" id="hour"></div>
+          <div class="hand minute" id="minute"></div>
+          <div class="hand second" id="second"></div>
+          <div class="center-dot"></div>
+
+          <!-- Heure numérique -->
+          <div class="digital" id="digital"></div>
+
+          <!-- À droite : nom du jour + jour du mois -->
+          <div class="week-box box"  id="week"></div>
+          <div class="day-box  box"  id="day"></div>
+
+          <!-- À gauche : mois + “sem” + carré semaine -->
+          <div class="month-cluster" id="monthCluster">
+            <div class="month-box box" id="month"></div>
+            <div class="week-label">sem</div>
+            <div class="weeknum-box box" id="weeknum"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer"></div>
+    </div>
+  </div>
+
+  <script>
+    /* ====== State & helpers animation ====== */
+    let funTimerId = null;
+    let isAnimating = false;           // fige H/M pendant anim (les secondes continuent)
+    let lastAngles = { h: 0, m: 0, s: 0 }; // angles absolus appliqués
+
+    function queueFunAnimation(delayMs = 500) {
+      clearTimeout(funTimerId);
+      funTimerId = setTimeout(startFunAnimation, delayMs);
+    }
+    function mod360(x){ return ((x % 360) + 360) % 360; }
+
+    /* ====== Mise à l’échelle responsive de la montre ====== */
+    const phone = document.getElementById('phone');
+    const watch = document.getElementById('watch');
+
+    function layoutWatch() {
+      const screen = phone.querySelector('.screen');
+      const header = phone.querySelector('.header');
+      const footer = phone.querySelector('.footer');
+
+      const screenRect = screen.getBoundingClientRect();
+      const headerRect = header.getBoundingClientRect();
+      const footerRect = footer.getBoundingClientRect();
+
+      const verticalPadding = 12;
+      const availableW = screenRect.width - 8; // petite marge
+      const availableH = screenRect.height - headerRect.height - footerRect.height - verticalPadding*2;
+
+      const size = Math.floor(Math.min(availableW, availableH)); // cadran = carré max
+      watch.style.width  = size + 'px';
+      watch.style.height = size + 'px';
+
+      // Redessiner les marqueurs + chiffres
+      drawMarks(size);
+      drawHourNumbers(size);   // <<< AJOUT
+    }
+
+    /* ====== Marqueurs (points + 4 traits) ====== */
+    function drawMarks(size) {
+      // Supprime anciens marqueurs si redraw
+      watch.querySelectorAll('.dot, .min-dot, .mark-wrap').forEach(n => n.remove());
+
+      const CENTER = size / 2;
+      const RADIUS_MARKS = size * 0.45;  // même rayon pour gros & petits points
+      const RADIUS_EDGE  = size / 2;     // bord interne du cercle
+
+      // pousse la base des traits jusqu’au bord (négatif = vers le haut en CSS)
+      watch.style.setProperty('--edge-translate', (-RADIUS_EDGE) + 'px');
+
+      // 12 positions d'heures : 0..11 (0,3,6,9 = traits ; les autres = gros points)
+      for (let i = 0; i < 12; i++) {
+        const deg = i * 30;
+        const rad = (deg - 90) * Math.PI / 180;
+
+        if (i === 0 || i === 3 || i === 6 || i === 9) {
+          // Trait cardinal via wrap centré (base au centre → bord)
+          const wrap = document.createElement('div');
+          wrap.className = 'mark-wrap';
+          wrap.style.transform = `translate(-50%, -50%) rotate(${deg}deg)`;
+
+          const mark = document.createElement('div');
+          mark.className = 'main-mark';
+
+          wrap.appendChild(mark);
+          watch.appendChild(wrap);
+        } else {
+          // Gros point d'heure (10px)
+          const dot = document.createElement('div');
+          dot.className = 'dot';
+          const x = CENTER + RADIUS_MARKS * Math.cos(rad) - 5;  // 10px / 2
+          const y = CENTER + RADIUS_MARKS * Math.sin(rad) - 5;
+          dot.style.left = `${x}px`;
+          dot.style.top  = `${y}px`;
+          watch.appendChild(dot);
+        }
+      }
+
+      // 60 minutes : petits points (5px) sauf multiples de 5 (heures)
+      for (let m = 0; m < 60; m++) {
+        if (m % 5 === 0) continue; // on saute les heures
+        const deg = m * 6;
+        const rad = (deg - 90) * Math.PI / 180;
+
+        const md = document.createElement('div');
+        md.className = 'min-dot';
+        const x = CENTER + RADIUS_MARKS * Math.cos(rad) - 2.5; // 5px / 2
+        const y = CENTER + RADIUS_MARKS * Math.sin(rad) - 2.5;
+        md.style.left = `${x}px`;
+        md.style.top  = `${y}px`;
+        watch.appendChild(md);
+      }
+    }
+
+    /* ====== Chiffres des heures (Comic Sans MS bleu gras, sauf 3 et 9) ====== */
+    function drawHourNumbers(size) {
+      // Nettoyer d’abord d’éventuels anciens chiffres
+      watch.querySelectorAll('.hour-num').forEach(n => n.remove());
+
+      const CENTER = size / 2;
+      const RADIUS_NUM = size * 0.36; // rayon d’affichage des chiffres (un peu à l’intérieur des points)
+      const fontPx = Math.max(12, Math.round(size * 0.08)); // taille responsive
+
+      // Heures 1..12 (exclure 3 et 9)
+      for (let h = 1; h <= 12; h++) {
+        if (h === 3 || h === 9) continue;
+
+        const deg = h * 30;                 // 0° à droite, on décale pour mettre 12 en haut
+        const rad = (deg - 90) * Math.PI / 180;
+
+        const x = CENTER + RADIUS_NUM * Math.cos(rad);
+        const y = CENTER + RADIUS_NUM * Math.sin(rad);
+
+        const el = document.createElement('div');
+        el.className = 'hour-num';
+        el.textContent = (h === 12) ? '12' : String(h);
+        el.style.left = `${x}px`;
+        el.style.top  = `${y}px`;
+        el.style.fontSize = `${fontPx}px`;
+
+        watch.appendChild(el);
+      }
+    }
+
+    /* ====== Fuseaux horaires ====== */
+    const TIMEZONE_MAP = {
+      "Genève":"Europe/Zurich","Zürich":"Europe/Zurich","Paris":"Europe/Paris","Londres":"Europe/London",
+      "New York":"America/New_York","Los Angeles":"America/Los_Angeles","Chicago":"America/Chicago","Mexico":"America/Mexico_City",
+      "Buenos Aires":"America/Argentina/Buenos_Aires","São Paulo":"America/Sao_Paulo","Lima":"America/Lima","Bogotá":"America/Bogota",
+      "Santiago":"America/Santiago","Toronto":"America/Toronto","Montréal":"America/Montreal","Vancouver":"America/Vancouver",
+      "Madrid":"Europe/Madrid","Barcelone":"Europe/Madrid","Lisbonne":"Europe/Lisbon","Rome":"Europe/Rome","Milan":"Europe/Rome",
+      "Berlin":"Europe/Berlin","Munich":"Europe/Berlin","Francfort":"Europe/Berlin","Vienne":"Europe/Vienna","Prague":"Europe/Prague",
+      "Varsovie":"Europe/Warsaw","Amsterdam":"Europe/Amsterdam","Bruxelles":"Europe/Brussels","Copenhague":"Europe/Copenhagen",
+      "Stockholm":"Europe/Stockholm","Oslo":"Europe/Oslo","Helsinki":"Europe/Helsinki","Dublin":"Europe/Dublin",
+      "Athènes":"Europe/Athens","Istanbul":"Europe/Istanbul","Moscou":"Europe/Moscow","Le Caire":"Africa/Cairo",
+      "Johannesburg":"Africa/Johannesburg","Nairobi":"Africa/Nairobi","Lagos":"Africa/Lagos","Casablanca":"Africa/Casablanca",
+      "Rabat":"Africa/Casablanca","Doha":"Asia/Qatar","Abu Dhabi":"Asia/Dubai","Dubaï":"Asia/Dubai","Riyad":"Asia/Riyadh",
+      "Téhéran":"Asia/Tehran","New Delhi":"Asia/Kolkata","Mumbai":"Asia/Kolkata","Bangalore":"Asia/Kolkata","Chennai":"Asia/Kolkata",
+      "Calcutta":"Asia/Kolkata","Karachi":"Asia/Karachi","Islamabad":"Asia/Karachi","Katmandou":"Asia/Kathmandu",
+      "Colombo":"Asia/Colombo","Bangkok":"Asia/Bangkok","Hanoï":"Asia/Bangkok","Hô Chi Minh-Ville":"Asia/Ho_Chi_Minh",
+      "Kuala Lumpur":"Asia/Kuala_Lumpur","Singapour":"Asia/Singapore","Jakarta":"Asia/Jakarta","Manille":"Asia/Manila",
+      "Hong Kong":"Asia/Hong_Kong","Macau":"Asia/Macau","Taipei":"Asia/Taipei","Shanghai":"Asia/Shanghai","Pékin":"Asia/Shanghai",
+      "Shenzhen":"Asia/Shanghai","Guangzhou":"Asia/Shanghai","Séoul":"Asia/Seoul","Tokyo":"Asia/Tokyo","Osaka":"Asia/Tokyo",
+      "Kyoto":"Asia/Tokyo","Sydney":"Australia/Sydney","Melbourne":"Australia/Melbourne","Auckland":"Pacific/Auckland",
+      "Wellington":"Pacific/Auckland"
+    };
+
+    let currentTZ = "Europe/Zurich"; // par défaut Genève/Zurich
+
+    function getPartsForTZ(tz) {
+      const now = new Date();
+
+      // Heure/minute/seconde
+      const tParts = new Intl.DateTimeFormat('fr-FR', {
+        timeZone: tz, hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
+      }).formatToParts(now);
+      const H = parseInt(tParts.find(p=>p.type==='hour').value,10);
+      const M = parseInt(tParts.find(p=>p.type==='minute').value,10);
+      const S = parseInt(tParts.find(p=>p.type==='second').value,10);
+
+      // Date (année, mois, jour, jour de semaine)
+      const dParts = new Intl.DateTimeFormat('fr-FR', {
+        timeZone: tz, year: 'numeric', month: '2-digit', day: '2-digit', weekday: 'short'
+      }).formatToParts(now);
+      const Y = parseInt(dParts.find(p=>p.type==='year').value,10);
+      const Mo = parseInt(dParts.find(p=>p.type==='month').value,10); // 1..12
+      const D = parseInt(dParts.find(p=>p.type==='day').value,10);
+      let wd = dParts.find(p=>p.type==='weekday').value.toLowerCase().replace(/\.$/,''); // "lun.", "mar." -> "lun","mar"
+
+      return {H,M,S,Y,Mo,D,wd};
+    }
+
+    function isoWeekOf(y,m,d){
+      const date = new Date(Date.UTC(y, m-1, d));
+      const dayNum = (date.getUTCDay()+6)%7 + 1; // 1..7 (lundi=1)
+      date.setUTCDate(date.getUTCDate() + 4 - dayNum);
+      const yearStart = new Date(Date.UTC(date.getUTCFullYear(),0,1));
+      return Math.ceil((((date - yearStart)/86400000)+1)/7);
+    }
+
+    /* ====== Horloge (TZ) ====== */
+    function updateClockTZ() {
+      const {H,M,S} = getPartsForTZ(currentTZ);
+
+      // Seconds: toujours actualisées (même pendant l’animation)
+      const sDeg = S * 6;
+      document.getElementById('second').style.transform = `translateX(-50%) rotate(${sDeg}deg)`;
+      lastAngles.s = sDeg;
+
+      // Digital en continu
+      document.getElementById('digital').textContent =
+        `${String(H).padStart(2,'0')}:${String(M).padStart(2,'0')}:${String(S).padStart(2,'0')}`;
+
+      if (isAnimating) return; // on ne touche pas H/M pendant l’anim
+
+      const mDeg = M * 6 + S * 0.1;
+      const hDeg = (H % 12) * 30 + M * 0.5;
+
+      document.getElementById('minute').style.transform = `translateX(-50%) rotate(${mDeg}deg)`;
+      document.getElementById('hour').style.transform   = `translateX(-50%) rotate(${hDeg}deg)`;
+
+      lastAngles.m = mDeg;
+      lastAngles.h = hDeg;
+    }
+
+    function updateCalendarTZ() {
+      const mois  = ["JAN","FEV","MAR","AVR","MAI","JUN","JUL","AOU","SEP","OCT","NOV","DEC"];
+      const {Y,Mo,D,wd} = getPartsForTZ(currentTZ);
+
+      document.getElementById('week').textContent  = wd;
+      document.getElementById('day').textContent   = String(D);
+      document.getElementById('month').textContent = mois[Mo-1];
+      document.getElementById('weeknum').textContent = String(isoWeekOf(Y,Mo,D));
+    }
+
+    /* ====== Animation “FUN” ====== */
+    function startFunAnimation() {
+      const DURATION = 1200; // ms
+      const EASE = 'cubic-bezier(.25,.9,.3,1)';
+
+      const { H, M, S } = getPartsForTZ(currentTZ);
+      const targetMinute = M * 6 + S * 0.1;
+      const targetHour   = (H % 12) * 30 + M * 0.5;
+
+      const hourEl   = document.getElementById('hour');
+      const minuteEl = document.getElementById('minute');
+
+      // Point de départ = angles actuels mémorisés
+      hourEl.style.transition = 'none';
+      minuteEl.style.transition = 'none';
+      hourEl.style.transform   = `translateX(-50%) rotate(${lastAngles.h}deg)`;
+      minuteEl.style.transform = `translateX(-50%) rotate(${lastAngles.m}deg)`;
+
+      // Fins absolues (heures CW +360°, minutes CCW −360°)
+      const deltaHcw = mod360(targetHour - lastAngles.h); // [0,360)
+      const endH = lastAngles.h + 360 + deltaHcw;
+
+      const deltaMccw = -mod360(lastAngles.m - targetMinute); // (-360,0]
+      const endM = lastAngles.m - 360 + deltaMccw;
+
+      requestAnimationFrame(() => {
+        isAnimating = true;
+
+        hourEl.style.transition   = `transform ${DURATION}ms ${EASE}`;
+        minuteEl.style.transition = `transform ${DURATION}ms ${EASE}`;
+
+        hourEl.style.transform   = `translateX(-50%) rotate(${endH}deg)`;
+        minuteEl.style.transform = `translateX(-50%) rotate(${endM}deg)`;
+
+        // Fin d'anim → on pose exactement la cible (mod 360) et on dé-freeze
+        setTimeout(() => {
+          hourEl.style.transition = 'none';
+          minuteEl.style.transition = 'none';
+
+          const hFinal = mod360(targetHour);
+          const mFinal = mod360(targetMinute);
+          hourEl.style.transform   = `translateX(-50%) rotate(${hFinal}deg)`;
+          minuteEl.style.transform = `translateX(-50%) rotate(${mFinal}deg)`;
+
+          lastAngles.h = hFinal;
+          lastAngles.m = mFinal;
+
+          isAnimating = false;
+        }, DURATION + 30);
+      });
+    }
+
+    /* ====== Menu villes (tri + codes pays) ====== */
+    const tzBtn  = document.getElementById('tzBtn');
+    const tzMenu = document.getElementById('tzMenu');
+    const tzList = document.getElementById('tzList');
+    const cityEl = document.getElementById('city');
+
+    const CITY_LIST = [
+      {name:"Genève",cc:"CH"}, {name:"Zürich",cc:"CH"}, {name:"Paris",cc:"FR"}, {name:"Londres",cc:"GB"},
+      {name:"New York",cc:"US"}, {name:"Los Angeles",cc:"US"}, {name:"Chicago",cc:"US"}, {name:"Mexico",cc:"MX"},
+      {name:"Buenos Aires",cc:"AR"}, {name:"São Paulo",cc:"BR"}, {name:"Lima",cc:"PE"}, {name:"Bogotá",cc:"CO"},
+      {name:"Santiago",cc:"CL"}, {name:"Toronto",cc:"CA"}, {name:"Montréal",cc:"CA"}, {name:"Vancouver",cc:"CA"},
+      {name:"Madrid",cc:"ES"}, {name:"Barcelone",cc:"ES"}, {name:"Lisbonne",cc:"PT"}, {name:"Rome",cc:"IT"},
+      {name:"Milan",cc:"IT"}, {name:"Berlin",cc:"DE"}, {name:"Munich",cc:"DE"}, {name:"Francfort",cc:"DE"},
+      {name:"Vienne",cc:"AT"}, {name:"Prague",cc:"CZ"}, {name:"Varsovie",cc:"PL"}, {name:"Amsterdam",cc:"NL"},
+      {name:"Bruxelles",cc:"BE"}, {name:"Copenhague",cc:"DK"}, {name:"Stockholm",cc:"SE"}, {name:"Oslo",cc:"NO"},
+      {name:"Helsinki",cc:"FI"}, {name:"Dublin",cc:"IE"}, {name:"Athènes",cc:"GR"}, {name:"Istanbul",cc:"TR"},
+      {name:"Moscou",cc:"RU"}, {name:"Le Caire",cc:"EG"}, {name:"Johannesburg",cc:"ZA"}, {name:"Nairobi",cc:"KE"},
+      {name:"Lagos",cc:"NG"}, {name:"Casablanca",cc:"MA"}, {name:"Rabat",cc:"MA"}, {name:"Doha",cc:"QA"},
+      {name:"Abu Dhabi",cc:"AE"}, {name:"Dubaï",cc:"AE"}, {name:"Riyad",cc:"SA"}, {name:"Téhéran",cc:"IR"},
+      {name:"New Delhi",cc:"IN"}, {name:"Mumbai",cc:"IN"}, {name:"Bangalore",cc:"IN"}, {name:"Chennai",cc:"IN"},
+      {name:"Calcutta",cc:"IN"}, {name:"Karachi",cc:"PK"}, {name:"Islamabad",cc:"PK"}, {name:"Katmandou",cc:"NP"},
+      {name:"Colombo",cc:"LK"}, {name:"Bangkok",cc:"TH"}, {name:"Hanoï",cc:"VN"}, {name:"Hô Chi Minh-Ville",cc:"VN"},
+      {name:"Kuala Lumpur",cc:"MY"}, {name:"Singapour",cc:"SG"}, {name:"Jakarta",cc:"ID"}, {name:"Manille",cc:"PH"},
+      {name:"Hong Kong",cc:"HK"}, {name:"Macau",cc:"MO"}, {name:"Taipei",cc:"TW"}, {name:"Shanghai",cc:"CN"},
+      {name:"Pékin",cc:"CN"}, {name:"Shenzhen",cc:"CN"}, {name:"Guangzhou",cc:"CN"}, {name:"Séoul",cc:"KR"},
+      {name:"Tokyo",cc:"JP"}, {name:"Osaka",cc:"JP"}, {name:"Kyoto",cc:"JP"}, {name:"Sydney",cc:"AU"},
+      {name:"Melbourne",cc:"AU"}, {name:"Auckland",cc:"NZ"}, {name:"Wellington",cc:"NZ"}
+    ];
+    const SORTED = CITY_LIST.slice().sort((a,b) => a.name.localeCompare(b.name, 'fr', {sensitivity:'base'}));
+
+    function populateTzList() {
+      tzList.innerHTML = "";
+      SORTED.forEach(({name, cc}) => {
+        const li = document.createElement('div');
+        li.className = 'tz-item';
+        li.setAttribute('role', 'option');
+        li.setAttribute('tabindex', '0');
+
+        const label = document.createElement('span');
+        label.textContent = name;
+
+        const ccSpan = document.createElement('span');
+        ccSpan.className = 'tz-cc';
+        ccSpan.textContent = `(${cc})`;
+
+        li.appendChild(label);
+        li.appendChild(ccSpan);
+
+        li.addEventListener('click', () => {
+          // 1) Met à jour la ville et le fuseau
+          cityEl.textContent = name;
+          currentTZ = TIMEZONE_MAP[name] || "Europe/Paris";
+
+          // 2) Ferme le menu (inchangé)
+          tzMenu.classList.remove('show');
+          tzBtn.setAttribute('aria-expanded', 'false');
+
+          // 3) MAJ immédiate du digital & calendrier
+          updateCalendarTZ();
+          updateClockTZ();
+
+          // 4) Programme l’animation 0,5 s après la fermeture
+          isAnimating = true;           // fige H/M pendant l’attente
+          queueFunAnimation(500);
+        });
+
+        li.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            li.click();
+          }
+        });
+        tzList.appendChild(li);
+      });
+    }
+
+    function toggleTzMenu() {
+      const isOpen = tzMenu.classList.toggle('show');
+      tzBtn.setAttribute('aria-expanded', String(isOpen));
+      if (isOpen) {
+        const first = tzList.querySelector('.tz-item');
+        first && first.focus();
+      }
+    }
+
+    const tzBtnEl  = document.getElementById('tzBtn');
+    const tzMenuEl = document.getElementById('tzMenu');
+
+    tzBtnEl.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (!tzMenuEl.classList.contains('show')) populateTzList();
+      toggleTzMenu();
+    });
+
+    // Ferme le menu si on clique ailleurs
+    document.addEventListener('click', (e) => {
+      if (tzMenuEl.classList.contains('show')) {
+        const inside = tzMenuEl.contains(e.target) || tzBtnEl.contains(e.target);
+        if (!inside) {
+          tzMenuEl.classList.remove('show');
+          tzBtnEl.setAttribute('aria-expanded', 'false');
+        }
+      }
+    });
+
+    // Echap pour fermer + navigation ↑/↓
+    document.addEventListener('keydown', (e) => {
+      if (!tzMenuEl.classList.contains('show')) return;
+
+      if (e.key === 'Escape') {
+        tzMenuEl.classList.remove('show');
+        tzBtnEl.setAttribute('aria-expanded', 'false');
+        tzBtnEl.focus();
+        return;
+      }
+
+      const items = [...tzList.querySelectorAll('.tz-item')];
+      if (items.length === 0) return;
+
+      const active = document.activeElement;
+      let idx = items.indexOf(active);
+
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        const next = items[Math.min(idx + 1, items.length - 1)] || items[0];
+        next.focus();
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        const prev = items[Math.max(idx - 1, 0)] || items[0];
+        prev.focus();
+      }
+    });
+
+    /* ====== Boucle ====== */
+    function tick() {
+      updateClockTZ();   // secondes + digital (H/M figées si anim)
+      updateCalendarTZ();
+    }
+
+    window.addEventListener('resize', layoutWatch);
+    layoutWatch();
+    setInterval(tick, 1000);
+    tick();
+  </script>
+</body>
+</html>

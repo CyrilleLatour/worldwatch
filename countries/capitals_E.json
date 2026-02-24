@@ -1,0 +1,88 @@
+{
+  "Ecuador": [
+    {
+      "cc": "EC",
+      "lat": -0.2299,
+      "lon": -78.5249,
+      "name": "Quito",
+      "tz": "America/Guayaquil"
+    }
+  ],
+  "Egypt": [
+    {
+      "cc": "EG",
+      "lat": 30.0444,
+      "lon": 31.2357,
+      "name": "Cairo",
+      "tz": "Africa/Cairo"
+    }
+  ],
+  "El Salvador": [
+    {
+      "cc": "SV",
+      "lat": 13.6929,
+      "lon": -89.2182,
+      "name": "San Salvador",
+      "tz": "America/El_Salvador"
+    }
+  ],
+  "Equatorial Guinea": [
+    {
+      "cc": "GQ",
+      "lat": 3.7523,
+      "lon": 8.7737,
+      "name": "Malabo",
+      "tz": "Africa/Malabo"
+    },
+    {
+      "cc": "GQ",
+      "lat": 1.6167,
+      "lon": 10.6167,
+      "name": "Oyala",
+      "tz": "Africa/Malabo"
+    }
+  ],
+  "Eritrea": [
+    {
+      "cc": "ER",
+      "lat": 15.3333,
+      "lon": 38.9333,
+      "name": "Asmara",
+      "tz": "Africa/Asmara"
+    }
+  ],
+  "Estonia": [
+    {
+      "cc": "EE",
+      "lat": 59.437,
+      "lon": 24.7536,
+      "name": "Tallinn",
+      "tz": "Europe/Tallinn"
+    }
+  ],
+  "Eswatini": [
+    {
+      "cc": "SZ",
+      "lat": -26.3167,
+      "lon": 31.1333,
+      "name": "Mbabane",
+      "tz": "Africa/Mbabane"
+    },
+    {
+      "cc": "SZ",
+      "lat": -26.4667,
+      "lon": 31.2,
+      "name": "Lobamba",
+      "tz": "Africa/Mbabane"
+    }
+  ],
+  "Ethiopia": [
+    {
+      "cc": "ET",
+      "lat": 9.0272,
+      "lon": 38.7369,
+      "name": "Addis Ababa",
+      "tz": "Africa/Addis_Ababa"
+    }
+  ]
+}

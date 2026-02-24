@@ -1,0 +1,101 @@
+{
+  "Namibia": [
+    {
+      "cc": "NA",
+      "lat": -22.5597,
+      "lon": 17.0836,
+      "name": "Windhoek",
+      "tz": "Africa/Windhoek"
+    }
+  ],
+  "Nauru": [
+    {
+      "cc": "NR",
+      "lat": -0.5477,
+      "lon": 166.9209,
+      "name": "Yaren District",
+      "tz": "Pacific/Nauru"
+    }
+  ],
+  "Nepal": [
+    {
+      "cc": "NP",
+      "lat": 27.7172,
+      "lon": 85.324,
+      "name": "Kathmandu",
+      "tz": "Asia/Kathmandu"
+    }
+  ],
+  "Netherlands": [
+    {
+      "cc": "NL",
+      "lat": 52.3676,
+      "lon": 4.9041,
+      "name": "Amsterdam",
+      "tz": "Europe/Amsterdam"
+    }
+  ],
+  "New Zealand": [
+    {
+      "cc": "NZ",
+      "lat": -41.2889,
+      "lon": 174.7772,
+      "name": "Wellington",
+      "tz": "Pacific/Auckland"
+    }
+  ],
+  "Nicaragua": [
+    {
+      "cc": "NI",
+      "lat": 12.1364,
+      "lon": -86.2514,
+      "name": "Managua",
+      "tz": "America/Managua"
+    }
+  ],
+  "Niger": [
+    {
+      "cc": "NE",
+      "lat": 13.5128,
+      "lon": 2.1128,
+      "name": "Niamey",
+      "tz": "Africa/Niamey"
+    }
+  ],
+  "Nigeria": [
+    {
+      "cc": "NG",
+      "lat": 9.0556,
+      "lon": 7.4914,
+      "name": "Abuja",
+      "tz": "Africa/Lagos"
+    }
+  ],
+  "North Korea": [
+    {
+      "cc": "KP",
+      "lat": 39.0194,
+      "lon": 125.7381,
+      "name": "Pyongyang",
+      "tz": "Asia/Pyongyang"
+    }
+  ],
+  "North Macedonia": [
+    {
+      "cc": "MK",
+      "lat": 41.9981,
+      "lon": 21.4254,
+      "name": "Skopje",
+      "tz": "Europe/Skopje"
+    }
+  ],
+  "Norway": [
+    {
+      "cc": "NO",
+      "lat": 59.9139,
+      "lon": 10.7522,
+      "name": "Oslo",
+      "tz": "Europe/Oslo"
+    }
+  ]
+}

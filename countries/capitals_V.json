@@ -1,0 +1,38 @@
+{
+  "Vanuatu": [
+    {
+      "cc": "VU",
+      "lat": -17.7338,
+      "lon": 168.3219,
+      "name": "Port Vila",
+      "tz": "Pacific/Efate"
+    }
+  ],
+  "Vatican City (Holy See)": [
+    {
+      "cc": "VA",
+      "lat": 41.9029,
+      "lon": 12.4534,
+      "name": "Vatican City",
+      "tz": "Europe/Vatican"
+    }
+  ],
+  "Venezuela": [
+    {
+      "cc": "VE",
+      "lat": 10.4806,
+      "lon": -66.9036,
+      "name": "Caracas",
+      "tz": "America/Caracas"
+    }
+  ],
+  "Vietnam": [
+    {
+      "cc": "VN",
+      "lat": 21.0285,
+      "lon": 105.8542,
+      "name": "Hanoi",
+      "tz": "Asia/Ho_Chi_Minh"
+    }
+  ]
+}

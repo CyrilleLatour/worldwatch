@@ -1,0 +1,164 @@
+{
+  "Cabo Verde": [
+    {
+      "cc": "CV",
+      "lat": 14.9167,
+      "lon": -23.5167,
+      "name": "Praia",
+      "tz": "Atlantic/Cape_Verde"
+    }
+  ],
+  "Cambodia": [
+    {
+      "cc": "KH",
+      "lat": 11.55,
+      "lon": 104.916,
+      "name": "Phnom Penh",
+      "tz": "Asia/Phnom_Penh"
+    }
+  ],
+  "Cameroon": [
+    {
+      "cc": "CM",
+      "lat": 3.857,
+      "lon": 11.517,
+      "name": "Yaounde",
+      "tz": "Africa/Douala"
+    }
+  ],
+  "Canada": [
+    {
+      "cc": "CA",
+      "lat": 45.4215,
+      "lon": -75.6972,
+      "name": "Ottawa",
+      "tz": "America/Toronto"
+    }
+  ],
+  "Central African Republic": [
+    {
+      "cc": "CF",
+      "lat": 4.3732,
+      "lon": 18.5628,
+      "name": "Bangui",
+      "tz": "Africa/Bangui"
+    }
+  ],
+  "Chad": [
+    {
+      "cc": "TD",
+      "lat": 12.11,
+      "lon": 15.05,
+      "name": "N'Djamena",
+      "tz": "Africa/Ndjamena"
+    }
+  ],
+  "Chile": [
+    {
+      "cc": "CL",
+      "lat": -33.4569,
+      "lon": -70.6483,
+      "name": "Santiago",
+      "tz": "America/Santiago"
+    }
+  ],
+  "China": [
+    {
+      "cc": "CN",
+      "lat": 39.9042,
+      "lon": 116.4074,
+      "name": "Beijing",
+      "tz": "Asia/Shanghai"
+    }
+  ],
+  "Colombia": [
+    {
+      "cc": "CO",
+      "lat": 4.6097,
+      "lon": -74.0817,
+      "name": "Bogota",
+      "tz": "America/Bogota"
+    }
+  ],
+  "Comoros": [
+    {
+      "cc": "KM",
+      "lat": -11.7042,
+      "lon": 43.2402,
+      "name": "Moroni",
+      "tz": "Indian/Comoro"
+    }
+  ],
+  "Congo, Democratic Republic of the": [
+    {
+      "cc": "CD",
+      "lat": -4.3276,
+      "lon": 15.3136,
+      "name": "Kinshasa",
+      "tz": "Africa/Kinshasa"
+    }
+  ],
+  "Congo, Republic of the": [
+    {
+      "cc": "CG",
+      "lat": -4.2667,
+      "lon": 15.2833,
+      "name": "Brazzaville",
+      "tz": "Africa/Brazzaville"
+    }
+  ],
+  "Costa Rica": [
+    {
+      "cc": "CR",
+      "lat": 9.9347,
+      "lon": -84.0907,
+      "name": "San Jose",
+      "tz": "America/Costa_Rica"
+    }
+  ],
+  "Cote d'Ivoire": [
+    {
+      "cc": "CI",
+      "lat": 6.8161,
+      "lon": -5.2742,
+      "name": "Yamoussoukro",
+      "tz": "Africa/Abidjan"
+    }
+  ],
+  "Croatia": [
+    {
+      "cc": "HR",
+      "lat": 45.815,
+      "lon": 15.9779,
+      "name": "Zagreb",
+      "tz": "Europe/Zagreb"
+    }
+  ],
+  "Cuba": [
+    {
+      "cc": "CU",
+      "lat": 23.133,
+      "lon": -82.3666,
+      "name": "Havana",
+      "tz": "America/Havana"
+    }
+  ],
+  "Cyprus": [
+    {
+      "cc": "CY",
+      "lat": 35.1856,
+      "lon": 33.3823,
+      "name": "Nicosia",
+      "tz": "Asia/Nicosia"
+    }
+  ],
+  "Czechia": [
+    {
+      "cc": "CZ",
+      "lat": 50.088,
+      "lon": 14.4208,
+      "name": "Prague",
+      "tz": "Europe/Prague"
+    }
+  ]
+}
