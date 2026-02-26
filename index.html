@@ -67,7 +67,7 @@
     html, body { height:100%; margin:0; background:#fffcf2; display:grid; place-items:center; font-family:Arial,Helvetica,sans-serif; }
 
     .phone {
-      position:relative; width:100%; background:#fffcf2;
+      position:relative; width:min(390px,92vw); aspect-ratio:9/19.5; background:#fffcf2;
       border:none; border-radius:0; box-shadow:none; overflow:hidden;
     }
 
@@ -148,7 +148,7 @@
     /* Fond en mode nuit */
     .phone.night-mode { background:#888; transition: background 1.5s; }
     .phone:not(.night-mode) { transition: background 1.5s; }
-    body.night-mode { background:#888; transition: background 1.5s; }
+    html.night-mode, body.night-mode { background:#888; transition: background 1.5s; }
     body:not(.night-mode) { transition: background 1.5s; }
 
     .footer { display:block; }
@@ -533,9 +533,9 @@
                   || __CAPITAL_COORDS[cityName]
                   || (window.__CITY_COORDS_BUFFER && window.__CITY_COORDS_BUFFER[cityName]);
       const w = document.getElementById('watch');
-      if(!coords){ w.classList.remove('night-mode'); document.querySelector('.phone').classList.remove('night-mode'); document.body.classList.remove('night-mode'); __lastNightState=false; return; }
+      if(!coords){ w.classList.remove('night-mode'); document.querySelector('.phone').classList.remove('night-mode'); document.body.classList.remove('night-mode'); document.documentElement.classList.remove('night-mode'); __lastNightState=false; return; }
       const sun = __computeSunRiseSet(coords[1], coords[0], currentTZ);
-      if(!sun){ w.classList.remove('night-mode'); document.querySelector('.phone').classList.remove('night-mode'); document.body.classList.remove('night-mode'); __lastNightState=false; return; }
+      if(!sun){ w.classList.remove('night-mode'); document.querySelector('.phone').classList.remove('night-mode'); document.body.classList.remove('night-mode'); document.documentElement.classList.remove('night-mode'); __lastNightState=false; return; }
       // Comparer en minutes locales
       const {H,M,S} = getPartsForTZ(currentTZ);
       const nowMin = H*60+M+S/60;
@@ -546,7 +546,7 @@
         __lastNightState = isNight;
         w.classList.toggle('night-mode', isNight);
         document.querySelector('.phone').classList.toggle('night-mode', isNight);
-        document.body.classList.toggle('night-mode', isNight);
+        document.body.classList.toggle('night-mode', isNight); document.documentElement.classList.toggle('night-mode', isNight);
       }
     }
 
